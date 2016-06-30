@@ -447,13 +447,13 @@ span.co-node span.dynatree-icon
     background-image: url("nodes.png");
 }
 
-span.l-node span.dynatree-icon
+span.c-node span.dynatree-icon
 {
     background-position: -16px 0;
     background-image: url("nodes.png");
 }
 
-span.c-node span.dynatree-icon
+span.e-node span.dynatree-icon
 {
     background-position: -32px 0;
     background-image: url("nodes.png");

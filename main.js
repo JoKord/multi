@@ -18,9 +18,11 @@ requirejs.config({
         underscore: "vendor/underscore/underscore",
         inst: "lib/instaladores/instaladores",
         sidebar: "controllers/sidebar",
+        datafactory: "controllers/data",
         gmap: "controllers/gmap",
-        data: "controllers/concorrencia",
+        icons: "controllers/icons",
         dynatree: "vendor/dynatree/jquery.dynatree",
+        treeData: "../data/tree",
         jqueryui: "vendor/jquery-ui/jquery-ui"
     }
 });

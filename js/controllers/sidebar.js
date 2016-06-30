@@ -1,4 +1,4 @@
-define(['dynatree'], function () {
+define(['treeData', 'datafactory', 'dynatree'], function (treeData, DataFactory) {
     function initialize() {
         createDynaTree();
         $(document).ready(function () {
@@ -13,40 +13,42 @@ define(['dynatree'], function () {
             });
         });
     }
-
     function createDynaTree() {
-        var treeData = [
-            {title: "Botswana", tooltip: "Botswana", expand: false, key: "bot",
-                isFolder: true, select: true, addClass: "co-node",
-                children: [
-                    {title: "Limits", key: "botswana_limits", addClass: "l-node"},
-                    {title: "Cities", key: "botswana_cities", addClass: "c-node"},
-                    {title: "Villages", key: "botswana_villages", addClass: "t-node"}
-                ]},
-            {title: "Madagascar", tooltip: "Madagascar", expand: false, key: "mad",
-                isFolder: true, select: true, addClass: "co-node",
-                children: [
-                    {title: "Limits", key: "madagascar_limits", addClass: "l-node"},
-                    {title: "Cities", key: "madagascar_cities", addClass: "c-node"},
-                    {title: "Towns", key: "madagascar_towns", addClass: "t-node"},
-                    {title: "Airports", key: "madagascar_airports", addClass: "a-node"}
-                ]}
-        ];
+        var resData = resData || {selected: []};
         $("#concorrencia").dynatree({
             checkbox: true,
             selectMode: 3,
-            children: treeData,
+            children: treeData.data,
             onSelect: function (select, node) {
                 var selKeys = $.map(node.tree.getSelectedNodes(), function (node) {
-                    console.log(node.data.key);
                     return node.data.key;
                 });
+                var myKeys = _.without(selKeys, 'st', 'mcel', 'tvm', 'tvcabo', 'vodacom', 'zap');
+                var unSel = _.difference(resData.selected, myKeys);
+                if (unSel.length !== 0) {
+                    for (var i = 0, length = unSel.length; i < length; i++) {
+                        resData.selected = _.without(resData.selected, unSel[i]);
+                        // Limpar Dados!
+                        // Todo
+                        DataFactory.clearData(unSel[i]);
+                        console.log("Limpei " + unSel[i]);
+                    }
+                }
+                for (var i = 0, length = myKeys.length; i < length; i++) {
+                    if (!_.contains(resData.selected, myKeys[i])) {
+                        resData.selected.push(myKeys[i]);
+                        // Adicionar Dados
+                        // Todo
+                        DataFactory.addData('concurrencia', myKeys[i]);
+                        console.log("Adicionei " + myKeys[i]);
+                    }
+                }
+                resData.selected = _.uniq(resData.selected);
             },
             debugLevel: 0
         });
         $("#concorrencia").hide();
     }
-
     function showIndicators(ind) {
         $("#indicadores").empty();
         $("#concorrencia").hide();

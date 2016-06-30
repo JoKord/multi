@@ -1,4 +1,4 @@
-define(['underscore', 'async!https://maps.google.com/maps/api/js?v=3'], function (_) {
+define(['underscore', 'icons', 'async!https://maps.google.com/maps/api/js?v=3'], function (_, icons) {
     var gmap = {
         map: {},
         data: {},
@@ -48,6 +48,12 @@ define(['underscore', 'async!https://maps.google.com/maps/api/js?v=3'], function
             this.data[type] = this.data[type] || {};
             this.data[type]['visible'] = true;
             this.data[type]['data'] = [];
+            var icon = {
+                url: icons.getIconURL(type),
+                size: new google.maps.Size(16, 16),
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(7.5, 7.5)
+            };
             var features = points.features;
             for (var i = 0, fLength = features.length; i < fLength; i++) {
                 var feature = features[i];
@@ -57,7 +63,8 @@ define(['underscore', 'async!https://maps.google.com/maps/api/js?v=3'], function
                     if (geo.type === 'Point') {
                         var myMarker = new google.maps.Marker({
                             position: new google.maps.LatLng(geo.coordinates[1], geo.coordinates[0]),
-                            id: properties.gid
+                            id: properties.gid,
+                            icon: icon
                         });
                         myMarker.setMap(this.map);
                         this.data[type]['data'].push(myMarker);
@@ -65,7 +72,8 @@ define(['underscore', 'async!https://maps.google.com/maps/api/js?v=3'], function
                         for (var j = 0, cLength = geo.coordinates.length; j < cLength; j++) {
                             var myMarker = new google.maps.Marker({
                                 position: new google.maps.LatLng(geo.coordinates[j][1], geo.coordinates[j][0]),
-                                id: properties.gid
+                                id: properties.gid,
+                                icon: icon
                             });
                             myMarker.setMap(this.map);
                             this.data[type]['data'].push(myMarker);
@@ -91,7 +99,7 @@ define(['underscore', 'async!https://maps.google.com/maps/api/js?v=3'], function
                 this.data[el].visible = true;
             }
         },
-        hasData: function (el) {
+        checkData: function (el) {
             return typeof this.data[el] !== 'undefined';
         }
     };
