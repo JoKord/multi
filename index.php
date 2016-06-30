@@ -39,67 +39,25 @@
             <section class="row">
                 <article class="col-lg-2 col-md-2 col-sm-2 sidebar">
                     <ul class="nav nav-sidebar">
-<!--<h4>Visualização</h4>-->
                         <hr>
-                        <li class="visual side-1 active"><a href="#"><i class="glyphicon glyphicon-globe"></i> Mapa <span class="sr-only">(current)</span></a></li>
-                        <li class="visual side-2"><a href="#"><i class="glyphicon glyphicon-signal"></i> Detalhe</a></li>                        
-<!--<h4>Indicadores</h4>-->
+                        <li data-vis="map" class="visual side-1 active"><a href="#"><i class="glyphicon glyphicon-globe"></i> Mapa <span class="sr-only">(current)</span></a></li>
+                        <li data-vis="detail" class="visual side-2"><a href="#"><i class="glyphicon glyphicon-signal"></i> Detalhe</a></li>                        
                         <hr>
-                        <li data-ind="vendasdirectas" class="idc side-3 active"><a href="#"><i class="glyphicon glyphicon-map-marker"></i> Vendas Directas</a></li>
+                        <li data-ind="vendasdirectas" class="idc side-3"><a href="#"><i class="glyphicon glyphicon-map-marker"></i> Vendas Directas</a></li>
                         <li data-ind="clientes" class="idc side-4"><a href="#"><i class="glyphicon glyphicon-map-marker"></i> Clientes</a></li>
                         <li data-ind="instaladores" class="idc side-5"><a href="#"><i class="glyphicon glyphicon-map-marker"></i> Instaladores</a></li>
-                        <li data-ind="canaisvendadirecta" class="idc side-6"><a href="#"><i class="glyphicon glyphicon-map-marker"></i> Canais Venda Indirecta</a></li>                     
+                        <li data-ind="canaisvendaindirecta" class="idc side-6"><a href="#"><i class="glyphicon glyphicon-map-marker"></i> Canais Venda Indirecta</a></li>                     
                         <li data-ind="concorrencia" class="idc side-7"><a href="#"><i class="glyphicon glyphicon-map-marker"></i> Concorrência</a></li>
                     </ul>
                     <ul class="nav nav-sidebar well">
+                        <div id="indicadores_title"></div>
                         <article id="concorrencia"></article>
                         <article id="indicadores"></article>
                     </ul>
                 </article>
                 <div class="col-lg-10 col-md-10 col-sm-10 col-lg-offset-2 col-md-offset-2 main">
                     <div id="basemap"></div>
-                    <div style="display:none;">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-                        nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-                        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt 
-                        mollit anim id est laborum.
-                        <br>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-                        nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-                        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt 
-                        mollit anim id est laborum.
-                        <br>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-                        nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-                        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt 
-                        mollit anim id est laborum.
-                        <br>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-                        nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-                        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt 
-                        mollit anim id est laborum.
-                        <br>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-                        nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-                        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt 
-                        mollit anim id est laborum.
-                        <br>
-                    </div>
+                    <div id="details">Não Existem Detalhes Associados.</div>
                 </div>
             </section>
         </div>  

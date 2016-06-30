@@ -82,7 +82,75 @@ define(['underscore', 'icons', 'async!https://maps.google.com/maps/api/js?v=3'],
                 }
             }
         },
-        hidePoints: function (el) {
+        pushCircles: function (type, points) {
+            this.data[type] = this.data[type] || {};
+            this.data[type]['visible'] = true;
+            this.data[type]['data'] = [];
+            var features = points.features;
+            for (var i = 0, fLength = features.length; i < fLength; i++) {
+                var feature = features[i];
+                var geo = feature.geometry;
+                var properties = feature.properties;
+                if (geo.type === 'Point' || geo.type === 'MultiPoint') {
+                    if (geo.type === 'Point') {
+                        var myCircle = new google.maps.Circle({
+                            strokeColor: '#00abbd',
+                            strokeOpacity: 0.1,
+                            strokeWeight: 3,
+                            fillColor: '#00abbd',
+                            fillOpacity: 0.1,
+                            center: new google.maps.LatLng(geo.coordinates[1], geo.coordinates[0]),
+                            radius: 50000
+                        });
+                        myCircle.setMap(this.map);
+                        this.data[type]['data'].push(myCircle);
+                    } else {
+                        for (var j = 0, cLength = geo.coordinates.length; j < cLength; j++) {
+                            var myCircle = new google.maps.Circle({
+                                strokeColor: '#00abbd',
+                                strokeOpacity: 0.3,
+                                strokeWeight: 3,
+                                fillColor: '#00abbd',
+                                fillOpacity: 0.3,
+                                center: new google.maps.LatLng(geo.coordinates[j][1], geo.coordinates[j][0]),
+                                radius: 500
+                            });
+                            myCircle.setMap(this.map);
+                            this.data[type]['data'].push(myCircle);
+                        }
+                    }
+                }
+            }
+        },
+        pushPolygons: function (type, polygons) {
+            this.data[type] = this.data[type] || {};
+            this.data[type]['visible'] = true;
+            this.data[type]['data'] = [];
+            var features = polygons.features;
+            for (var i = 0, fLength = features.length; i < fLength; i++) {
+                var feature = features[i];
+                var geo = feature.geometry;
+                var properties = feature.properties;
+                for (var j = 0; j < geo.coordinates.length; j++) {
+                    var x = geo.coordinates[j][0];
+                    var path = new Array();
+                    for (var k = 0, length = x.length; k < length; k++) {
+                        path.push(new google.maps.LatLng(x[k][1], x[k][0]));
+                    }
+                    var polygon = new google.maps.Polygon({
+                        paths: path,
+                        strokeColor: '#00abbd',
+                        strokeOpacity: 0.7,
+                        strokeWeight: 3,
+                        fillColor: '#00abbd',
+                        fillOpacity: 0.5
+                    });
+                    polygon.setMap(this.map);
+                    this.data[type]['data'].push(polygon);
+                }
+            }
+        },
+        hideFeatures: function (el) {
             if (typeof this.data[el] !== 'undefined') {
                 _.each(this.data[el].data, function (el, index, list) {
                     el.setMap(null);
@@ -90,7 +158,7 @@ define(['underscore', 'icons', 'async!https://maps.google.com/maps/api/js?v=3'],
                 this.data[el].visible = false;
             }
         },
-        showPoints: function (el) {
+        showFeatures: function (el) {
             if (typeof this.data[el] !== 'undefined') {
                 var map = this.map;
                 _.each(this.data[el].data, function (el, index, list) {

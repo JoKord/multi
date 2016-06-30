@@ -1,26 +1,29 @@
 define(['gmap'], function (gmap) {
-
     var DataFactory = {
-        data: {},
-        addData: function (type, table) {
+        addDataConcurrencia: function (table) {
             if (gmap.checkData(table)) {
-                gmap.showPoints(table);
+                gmap.showFeatures(table);
             } else {
-                switch (type) {
-                    case 'concurrencia':
-                        getDataConcurrencia(table);
-                        break;
-                }
+                getDataConcurrencia(table);
             }
         },
         clearData: function (t) {
-            gmap.hidePoints(t);
+            gmap.hideFeatures(t);
         }
     };
 
     function getDataConcurrencia(table) {
-        $.getJSON('data/getConcorrencia.php', {data: table}, function (points) {
-            gmap.pushPoints(table, points);
+        $.getJSON('data/getConcorrencia.php', {data: table}, function (collection) {
+            var featType = collection.features[0].geometry.type;
+            if (featType === 'Point' || featType === 'MultiPoint') {
+                if (!table.toString().endsWith("_cobertura")) {
+                    gmap.pushPoints(table, collection);
+                } else {
+                    gmap.pushCircles(table, collection);
+                }
+            } else {
+                gmap.pushPolygons(table, collection);
+            }
         });
     }
     return DataFactory;

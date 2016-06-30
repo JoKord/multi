@@ -3,8 +3,8 @@ define(function () {
         'startimes_emissores': 'assets/icons/point.png',
         'mcel_emissores': 'assets/icons/point.png',
         'vodacom_emissores': 'assets/icons/point.png',
-        'zap_lojas': 'assets/icons/point.png',
-        'zap_agentes': 'assets/icons/point_alt.png'
+        'zap_loja': 'assets/icons/point.png',
+        'zap_agente': 'assets/icons/point_alt.png'
     };
     
     return {

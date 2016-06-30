@@ -5,6 +5,9 @@ body{
     height: 500px;
     width: 100%;
 }
+#details{
+    display: none;
+}
 hr{
     margin-top: 10px;
     margin-bottom: 10px;
@@ -181,4 +184,31 @@ hr{
 .nav-sidebar > .active.side-7 > a:focus {
     color: #fff;
     background-color: #00abbd;
+}
+
+.nav-sidebar.well{
+    padding: 5px;
+}
+
+#indicadores_title {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-align: center;
+    background-color: #fff;
+}
+#indicadores_title.side-3 {
+    border: solid 2px #ed1b24;
+}
+#indicadores_title.side-4 {
+    border: solid 2px #f37020;
+}
+#indicadores_title.side-5 {
+    border: solid 2px #fdb934;
+}
+#indicadores_title.side-6 {
+    border: solid 2px #51b747;
+}
+#indicadores_title.side-7 {
+    border: solid 2px #00abbd;
 }

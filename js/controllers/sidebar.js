@@ -5,6 +5,7 @@ define(['treeData', 'datafactory', 'dynatree'], function (treeData, DataFactory)
             $("ul.nav-sidebar li.visual").click(function (e) {
                 $(this).parent().find('.active.visual').removeClass('active');
                 $(this).addClass('active');
+                showVisualization($(this).data('vis'));
             });
             $("ul.nav-sidebar li.idc").click(function (e) {
                 $(this).parent().find('.active.idc').removeClass('active');
@@ -28,19 +29,13 @@ define(['treeData', 'datafactory', 'dynatree'], function (treeData, DataFactory)
                 if (unSel.length !== 0) {
                     for (var i = 0, length = unSel.length; i < length; i++) {
                         resData.selected = _.without(resData.selected, unSel[i]);
-                        // Limpar Dados!
-                        // Todo
                         DataFactory.clearData(unSel[i]);
-                        console.log("Limpei " + unSel[i]);
                     }
                 }
                 for (var i = 0, length = myKeys.length; i < length; i++) {
                     if (!_.contains(resData.selected, myKeys[i])) {
                         resData.selected.push(myKeys[i]);
-                        // Adicionar Dados
-                        // Todo
-                        DataFactory.addData('concurrencia', myKeys[i]);
-                        console.log("Adicionei " + myKeys[i]);
+                        DataFactory.addDataConcurrencia(myKeys[i]);
                     }
                 }
                 resData.selected = _.uniq(resData.selected);
@@ -50,10 +45,41 @@ define(['treeData', 'datafactory', 'dynatree'], function (treeData, DataFactory)
         $("#concorrencia").hide();
     }
     function showIndicators(ind) {
+        $("#indicadores_title").text("").removeClass();
         $("#indicadores").empty();
         $("#concorrencia").hide();
-        if (ind === 'concorrencia') {
-            $("#concorrencia").show();
+        switch (ind) {
+            case 'vendasdirectas':
+                $("#indicadores_title").text("Vendas Directas");
+                $("#indicadores_title").addClass('side-3');
+                break;
+            case 'clientes':
+                $("#indicadores_title").text("Clientes");
+                $("#indicadores_title").addClass('side-4');
+                break;
+            case 'instaladores':
+                $("#indicadores_title").text("Instaladores");
+                $("#indicadores_title").addClass('side-5');
+                break;
+            case 'canaisvendaindirecta':
+                $("#indicadores_title").text("Canais de Venda Indirecta");
+                $("#indicadores_title").addClass('side-6');
+                break;
+            case 'concorrencia':
+                $("#indicadores_title").text("Concorrência");
+                $("#indicadores_title").addClass('side-7');
+                $("#concorrencia").show();
+                break;
+            default:
+                break;
+        }
+    }
+    function showVisualization(el) {
+        if (el === 'detail') {
+            $("#basemap").hide();
+        } else if (el === 'map') {
+            $("#detail").hide();
+            $("#basemap").show();
         }
     }
     return {

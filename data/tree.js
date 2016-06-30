@@ -9,7 +9,7 @@ define({
             isFolder: true, select: true, addClass: "co-node",
             children: [
                 {title: "Emissores", key: "mcel_emissores", addClass: "e-node"},
-                {title: "Cobertura", key: "mcel_cobertura", addClass: "c-node"}
+                {title: "Cobertura", key: "mcel_emissores_cobertura", addClass: "c-node"}
             ]},
         {title: "Tv Cabo", tooltip: "Tv Cabo", expand: false, key: "tvcabo",
             isFolder: true, select: true, addClass: "co-node",
@@ -20,13 +20,13 @@ define({
             isFolder: true, select: true, addClass: "co-node",
             children: [
                 {title: "Emissores", key: "vodacom_emissores", addClass: "e-node"},
-                {title: "Cobertura", key: "vodacom_cobertura", addClass: "c-node"}
+                {title: "Cobertura", key: "vodacom_emissores_cobertura", addClass: "c-node"}
             ]},
         {title: "Zap", tooltip: "zap", expand: false, key: "zap",
             isFolder: true, select: true, addClass: "co-node",
             children: [
-                {title: "Lojas", key: "zap_lojas", addClass: "e-node"},
-                {title: "Agentes", key: "zap_agentes", addClass: "t-node"}
+                {title: "Lojas", key: "zap_loja", addClass: "e-node"},
+                {title: "Agentes", key: "zap_agente", addClass: "t-node"}
             ]}
     ]
 });
