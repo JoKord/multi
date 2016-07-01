@@ -3,8 +3,8 @@
     <head>
         <meta charset="UTF-8">
         <title>MultiChoice</title>
-        <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.css">
-        <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap-theme.css">
+        <link rel="stylesheet" href="js/vendor/bootstrap/css/bootstrap.css">
+        <link rel="stylesheet" href="js/vendor/bootstrap/css/bootstrap-theme.css">
         <link rel="stylesheet" href="js/vendor/dynatree/skin/ui.dynatree.css">
         <link rel="stylesheet" href="/css/index.css">
         <link rel="stylesheet" href="/css/details.css">
@@ -53,13 +53,7 @@
                     <ul class="nav nav-sidebar well">
                         <div id="indicadores_title"></div>
                         <article id="concorrencia"></article>
-                        <article id="indicadores">
-                            <div style="text-align: center;">
-                                <div class="btn-group" style="margin: 0 auto;" role="group" aria-label="...">
-                                    <button class="btn btn-warning" type="button" id="btn_search_instaladores"><i class="glyphicon glyphicon-search"></i>  Pesquisar</button>
-                                    <button class="btn btn-warning" type="button" id="btn_search_instaladores"><i class="glyphicon glyphicon-trash"></i>  Limpar</button>
-                                </div>
-                            </div>
+                        <article id="indicadores">                           
                         </article>
                     </ul>
                 </article>

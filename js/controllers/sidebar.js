@@ -1,6 +1,7 @@
-define(['handlebars' , 'text!../partials/instaladores.hbs','treeData', 'datafactory', 'dynatree'], function (Handlebars, sample, treeData, DataFactory) {
+define(['handlebars', 'text!../partials/instaladores.hbs', 'treeData', 'datafactory', 'dynatree'], function (Handlebars, sample, treeData, DataFactory) {
     function initialize() {
-        $("#basemap").hide();
+        //$("#basemap").hide();
+        $('.dropdown-toggle').dropdown();
         // TO CLEAR
         // begin instalador
 //        var theTemplate = Handlebars.compile(sample);
@@ -90,10 +91,16 @@ define(['handlebars' , 'text!../partials/instaladores.hbs','treeData', 'datafact
             case 'instaladores':
                 $("#indicadores_title").text("Instaladores");
                 $("#indicadores_title").addClass('side-5');
-//                $("#indicadores").append(
-//                        '<button class="btn btn-warning" type="button" id="btn_search_instaladores"><i class="glyphicon glyphicon-search"></i>Pesquisar</button>');
-                $("#btn_search_instaladores").click(function () {
-                    DataFactory.addDataInstaladores();
+                $("#indicadores").load('/partials/test.html', function () {
+                    $("#btn_search_instaladores").click(function () {
+                        DataFactory.addDataInstaladores();
+                    });
+                    $("#btn_clear_instaladores").click(function () {
+                        DataFactory.clearData('instaladores');
+                    });
+                    $(".dropdown-menu a").click(function(){
+                        console.log(this);
+                    });
                 });
                 break;
             case 'canaisvendaindirecta':

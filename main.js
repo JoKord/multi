@@ -12,10 +12,15 @@ requirejs.config({
         },
         jqueryui: {
             deps: ['jquery']
+        },
+        bootstrap: {
+            deps: ['jquery'],
+            exports: '$'
         }
     },
     paths: {
         underscore: "vendor/underscore/underscore",
+        bootstrap: "vendor/bootstrap/js/bootstrap",
         handlebars: "https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min",
 //        inst: "controllers/instaladores",
         sidebar: "controllers/sidebar",
