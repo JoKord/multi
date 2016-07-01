@@ -1,5 +1,35 @@
-define(['treeData', 'datafactory', 'dynatree'], function (treeData, DataFactory) {
+define(['handlebars' , 'text!../partials/instaladores.hbs','treeData', 'datafactory', 'dynatree'], function (Handlebars, sample, treeData, DataFactory) {
     function initialize() {
+        $("#basemap").hide();
+        // TO CLEAR
+        // begin instalador
+//        var theTemplate = Handlebars.compile(sample);
+//        var data = {
+//            foto: "/assets/avatar.png",
+//            cracha: "123456", 
+//            nome: "John Doe",
+//            marca: "GoTV",
+//            categoria: "Senior",
+//            telefone: "000-000-000",
+//            email: "johnDoe@inst.mz",
+//            regiao: "Região",
+//            provincia: "Província",
+//            distrito: "Distrito",
+//            cidade: "Cidade",
+//            localidade: "Localidade",
+//            bairro: "Bairro",
+//            observacoes: "Não existem observações."
+//        };
+//        $("#details").append(theTemplate(data));
+//        $("#details").show();
+        // end instalador
+        // begin instaladores
+//        var theTemplate = Handlebars.compile(sample);
+//        //var data = {instaladores:[[{name:"John Doe 1",id:"1", foto:"/assets/avatar.png"},{name:"John Doe 2"},{name:"John Doe 3"},{name:"John Doe 4"}],[{name:"John Doe 1"},{name:"John Doe 2"},{name:"John Doe 3"},{name:"John Doe 4"}]]};
+//        var data = {instaladores:[[{name:"John Doe 1", marca:"GoTV", categoria: "Senior", id:"1", foto:"/assets/avatar.png"}]]};
+//        $("#details").append(theTemplate(data));
+//        $("#details").show();
+        // end instaladores
         createDynaTree();
         $(document).ready(function () {
             $("ul.nav-sidebar li.visual").click(function (e) {
@@ -60,6 +90,11 @@ define(['treeData', 'datafactory', 'dynatree'], function (treeData, DataFactory)
             case 'instaladores':
                 $("#indicadores_title").text("Instaladores");
                 $("#indicadores_title").addClass('side-5');
+//                $("#indicadores").append(
+//                        '<button class="btn btn-warning" type="button" id="btn_search_instaladores"><i class="glyphicon glyphicon-search"></i>Pesquisar</button>');
+                $("#btn_search_instaladores").click(function () {
+                    DataFactory.addDataInstaladores();
+                });
                 break;
             case 'canaisvendaindirecta':
                 $("#indicadores_title").text("Canais de Venda Indirecta");
@@ -75,12 +110,17 @@ define(['treeData', 'datafactory', 'dynatree'], function (treeData, DataFactory)
         }
     }
     function showVisualization(el) {
-        if (el === 'detail') {
-            $("#basemap").hide();
-        } else if (el === 'map') {
-            $("#detail").hide();
-            $("#basemap").show();
-        }
+//        if (el === 'detail') {
+//            $("#basemap").hide();
+//            $('#details').load('/partials/instaladores.html');
+//            $("#details").show();
+//        } else if (el === 'map') {
+//            $("#details").hide();
+//            $("#basemap").show();
+//        }
+        $("#basemap").hide();
+        $('#details').load('/partials/instaladores.html');
+        $("#details").show();
     }
     return {
         initialize: initialize

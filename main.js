@@ -16,7 +16,8 @@ requirejs.config({
     },
     paths: {
         underscore: "vendor/underscore/underscore",
-        inst: "lib/instaladores/instaladores",
+        handlebars: "https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min",
+//        inst: "controllers/instaladores",
         sidebar: "controllers/sidebar",
         datafactory: "controllers/data",
         gmap: "controllers/gmap",

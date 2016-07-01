@@ -7,6 +7,13 @@ define(['gmap'], function (gmap) {
                 getDataConcurrencia(table);
             }
         },
+        addDataInstaladores: function () {
+            if (gmap.checkData('instaladores')) {
+                gmap.showFeatures('instaladores');
+            } else {
+                getDataInstaladores();
+            }
+        },
         clearData: function (t) {
             gmap.hideFeatures(t);
         }
@@ -26,5 +33,13 @@ define(['gmap'], function (gmap) {
             }
         });
     }
+
+    function getDataInstaladores() {
+        $.getJSON('data/getInstaladores.php', function (collection) {
+            gmap.pushPoints('instaladores', collection);
+            
+        });
+    }
+
     return DataFactory;
 });
