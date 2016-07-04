@@ -36,7 +36,7 @@ class Database {
     }
 
     public function getInstaladores() {
-        $q = "SELECT id, cod_cracha, tipo, nome, endereco, contacto, categoria, email, ST_AsGeoJSON(ST_Transform((geom),4326)) AS geojson FROM instaladores.instaladores";
+        $q = "SELECT id, cod_cracha, tipo, nome, endereco, contacto, categoria, email, observacoes, ST_AsGeoJSON(ST_Transform((geom),4326)) AS geojson FROM instaladores.instaladores";
         $rs = pg_query($q);
         if (!$rs) {
             echo 'An SQL error occured.\n';

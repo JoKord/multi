@@ -36,9 +36,9 @@
                 </form>
             </div>
         </nav>  
-        <div class="container">
+        <div id="container_toggle" class="container-fluid">
             <section class="row">
-                <article class="col-lg-2 col-md-2 col-sm-2 sidebar">
+                <div class="col-lg-2 col-md-2 col-sm-2 sidebar">
                     <ul class="nav nav-sidebar">
                         <hr>
                         <li data-vis="map" class="visual side-1 active"><a href="#"><i class="glyphicon glyphicon-globe"></i> Mapa <span class="sr-only">(current)</span></a></li>
@@ -56,10 +56,10 @@
                         <article id="indicadores">                           
                         </article>
                     </ul>
-                </article>
+                </div>
                 <div class="col-lg-10 col-md-10 col-sm-10 col-lg-offset-2 col-md-offset-2 main">
                     <div id="basemap"></div>
-                    <div id="details"></div>
+                    <div id="details" ></div>
                 </div>
             </section>
         </div>  
