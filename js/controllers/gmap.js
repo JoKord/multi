@@ -44,7 +44,7 @@ define(['underscore', 'icons', 'async!https://maps.google.com/maps/api/js?v=3'],
                 ]};
             this.map = new google.maps.Map(document.getElementById('basemap'), mapOptions);
         },
-        pushPoints: function (type, points) {
+        pushPoints: function (type, points, callback) {
             this.data[type] = this.data[type] || {};
             this.data[type]['visible'] = true;
             this.data[type]['data'] = [];
@@ -148,6 +148,13 @@ define(['underscore', 'icons', 'async!https://maps.google.com/maps/api/js?v=3'],
                     polygon.setMap(this.map);
                     this.data[type]['data'].push(polygon);
                 }
+            }
+        },
+        clearPoints: function (el) {
+            this.hideFeatures(el);
+            if (typeof this.data[el] !== 'undefined') {
+                this.data[el].data = {};
+                this.data[el].visible = false;
             }
         },
         hideFeatures: function (el) {
