@@ -1,7 +1,9 @@
-define(['underscore', 'icons', 'async!https://maps.google.com/maps/api/js?v=3'], function (_, icons) {
+var x;
+define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/api/js?v=3'], function (_, icons) {
     var gmap = {
         map: {},
         data: {},
+        clusters: {},
         initialize: function gmap(lat, lng, callback) {
             var mapOptions = {
                 zoom: 5,
@@ -63,7 +65,7 @@ define(['underscore', 'icons', 'async!https://maps.google.com/maps/api/js?v=3'],
                     if (geo.type === 'Point') {
                         var myMarker = new google.maps.Marker({
                             position: new google.maps.LatLng(geo.coordinates[1], geo.coordinates[0]),
-                            id: properties.gid,
+                            id: properties.id,
                             icon: icon
                         });
                         myMarker.setMap(this.map);
@@ -72,13 +74,64 @@ define(['underscore', 'icons', 'async!https://maps.google.com/maps/api/js?v=3'],
                         for (var j = 0, cLength = geo.coordinates.length; j < cLength; j++) {
                             var myMarker = new google.maps.Marker({
                                 position: new google.maps.LatLng(geo.coordinates[j][1], geo.coordinates[j][0]),
-                                id: properties.gid,
+                                id: properties.id,
                                 icon: icon
                             });
                             myMarker.setMap(this.map);
                             this.data[type]['data'].push(myMarker);
                         }
                     }
+                    google.maps.event.addListener(myMarker, 'click', function () {
+                        callback(this);
+                    });
+                }
+            }
+        },
+        pushDifferentPoints: function (type, points, callback, extras) {
+            this.data[type] = this.data[type] || {};
+            this.data[type]['visible'] = true;
+            this.data[type]['data'] = [];
+            var icon = {
+                url: icons.getIconURL(type),
+                size: new google.maps.Size(16, 16),
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(7.5, 7.5)
+            };
+            var features = points.features;
+            for (var i = 0, fLength = features.length; i < fLength; i++) {
+                var feature = features[i];
+                var geo = feature.geometry;
+                var properties = feature.properties;
+                if (properties[extras[0]] === extras[1]) {
+                    icon.url = icons.getIconURL(type + "_" + extras[1]);
+                } else {
+                    icon.url = icons.getIconURL(type);
+                }
+                if (geo.type === 'Point' || geo.type === 'MultiPoint') {
+                    if (geo.type === 'Point') {
+                        var myMarker = new google.maps.Marker({
+                            position: new google.maps.LatLng(geo.coordinates[1], geo.coordinates[0]),
+                            id: properties.id,
+                            sep: properties[extras[0]],
+                            icon: icon
+                        });
+                        myMarker.setMap(this.map);
+                        this.data[type]['data'].push(myMarker);
+                    } else {
+                        for (var j = 0, cLength = geo.coordinates.length; j < cLength; j++) {
+                            var myMarker = new google.maps.Marker({
+                                position: new google.maps.LatLng(geo.coordinates[j][1], geo.coordinates[j][0]),
+                                id: properties.id,
+                                sep: properties[extras[0]],
+                                icon: icon
+                            });
+                            myMarker.setMap(this.map);
+                            this.data[type]['data'].push(myMarker);
+                        }
+                    }
+                    google.maps.event.addListener(myMarker, 'click', function () {
+                        callback(this);
+                    });
                 }
             }
         },
@@ -176,6 +229,75 @@ define(['underscore', 'icons', 'async!https://maps.google.com/maps/api/js?v=3'],
         },
         checkData: function (el) {
             return typeof this.data[el] !== 'undefined';
+        },
+        createCluster: function (el) {
+            var mcOptions = {
+                gridSize: 2,
+                styles: [{
+                        'url': icons.getIconURL('cluster_' + el), // (string) The image url.
+                        'height': 9, // (number) The image height.
+                        'width': 9, // (number) The image width.
+                        'anchorText': [-8, 8], // (Array) The anchor position of the label text.
+                        'textColor': "#000", //(string) The text color.
+                        'textSize': 12, //(number) The text size.
+                        'backgroundPosition': "0 0", // (string) The position of the backgound x, y.
+                        'anchorIcon': [4, 4] // (Array) The anchor position of the icon x, y.
+                    }],
+                maxZoom: 20
+            };
+            var myCluster = new MarkerClusterer(this.map, this.data[el].data, mcOptions);
+            this.clusters[el] = [];
+            this.clusters[el].push(myCluster);
+        },
+        createClusters: function (el, separator) {
+            this.clusters[el] = [];
+            var firstData = [], secondData = [];
+            _.each(this.data[el].data, function (item, index, list) {
+                if (item.sep === separator) {
+                    firstData.push(item);
+                } else {
+                    secondData.push(item);
+                }
+            });
+            var firstOp = {
+                gridSize: 5,
+                styles: [{
+                        'url': icons.getIconURL('cluster_' + el), // (string) The image url.
+                        'height': 9, // (number) The image height.
+                        'width': 9, // (number) The image width.
+                        'anchorText': [-9, -9], // (Array) The anchor position of the label text.
+                        'textColor': "#000", //(string) The text color.
+                        'textSize': 12, //(number) The text size.
+                        'backgroundPosition': "0 0", // (string) The position of the backgound x, y.
+                        'anchorIcon': [9, 9] // (Array) The anchor position of the icon x, y.
+                    }],
+                maxZoom: 20
+            };
+            var first = new MarkerClusterer(this.map, firstData, firstOp);
+            this.clusters[el].push(first);
+            var secondOp = {
+                gridSize: 5,
+                styles: [{
+                        'url': icons.getIconURL('cluster_' + el), // (string) The image url.
+                        'height': 9, // (number) The image height.
+                        'width': 9, // (number) The image width.
+                        'anchorText': [9, 9], // (Array) The anchor position of the label text.
+                        'textColor': "#000", //(string) The text color.
+                        'textSize': 12, //(number) The text size.
+                        'backgroundPosition': '-9 0', // (string) The position of the backgound x, y.
+                        'anchorIcon': [0,0] // (Array) The anchor position of the icon x, y.
+                    }]
+            };
+            var second = new MarkerClusterer(this.map, secondData, secondOp);
+            this.clusters[el].push(second);
+        },
+        clearCuster: function (el) {
+            _.each(this.clusters[el], function (ele, i, list) {
+                if (ele instanceof MarkerClusterer) {
+                    ele.clearMarkers();
+                    list[i] = [];
+                }
+            });
         }
     };
     return gmap;

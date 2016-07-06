@@ -41,8 +41,8 @@
                 <div class="col-lg-2 col-md-2 col-sm-2 sidebar">
                     <ul class="nav nav-sidebar">
                         <hr>
-                        <li data-vis="map" class="visual side-1 active"><a href="#"><i class="glyphicon glyphicon-globe"></i> Mapa <span class="sr-only">(current)</span></a></li>
-                        <li data-vis="detail" class="visual side-2"><a href="#"><i class="glyphicon glyphicon-signal"></i> Detalhe</a></li>                        
+                        <li id="sel_map" data-vis="map" class="visual side-1 active"><a href="#"><i class="glyphicon glyphicon-globe"></i> Mapa <span class="sr-only">(current)</span></a></li>
+                        <li id="sel_detail" data-vis="detail" class="visual side-2"><a href="#"><i class="glyphicon glyphicon-signal"></i> Detalhe</a></li>                        
                         <hr>
                         <li data-ind="vendasdirectas" class="idc side-3"><a href="#"><i class="glyphicon glyphicon-map-marker"></i> Vendas Directas</a></li>
                         <li data-ind="clientes" class="idc side-4"><a href="#"><i class="glyphicon glyphicon-map-marker"></i> Clientes</a></li>
@@ -65,7 +65,6 @@
         </div>  
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script data-main="main.js" src="vendor/require.js/require.js"></script>
-        <script src="/vendor/google/markercluster/markerclusterer.js"></script>
     </script>
 </body>
 </html>

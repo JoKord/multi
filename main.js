@@ -16,7 +16,10 @@ requirejs.config({
         bootstrap: {
             deps: ['jquery'],
             exports: '$'
-        }       
+        },
+        clusterer: {
+            exports: 'MarkerClusterer'
+        }
     },
     paths: {
         underscore: "vendor/underscore/underscore",
@@ -26,6 +29,7 @@ requirejs.config({
         treeData: "../data/tree",
         jqueryui: "vendor/jquery-ui/jquery-ui",
         gmap: "controllers/gmap",
+        clusterer: "vendor/markercluster/markerclusterer",
         sidebar: "controllers/sidebar",
         datafactory: "controllers/data",
         inst: "controllers/instaladores",
