@@ -36,7 +36,7 @@ class Database {
     }
 
     public function getInstaladores($req) {
-        $q = "SELECT id, cod_cracha, tipo, nome, endereco, contacto, categoria, email, observacoes, regiao, ST_AsGeoJSON(ST_Transform((geom),4326)) AS geojson FROM instaladores.instaladores";
+        $q = "SELECT id, cod_cracha, tipo, nome as fullName, endereco, contacto, categoria, email, observacoes, regiao, ST_AsGeoJSON(ST_Transform((geom),4326)) AS geojson FROM instaladores.instalador";
         $extraparams = array();
         if ($req->marca != NULL) {
             array_push($extraparams, " tipo = '$req->marca'");

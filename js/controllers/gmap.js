@@ -7,7 +7,7 @@ define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/
         initialize: function gmap(lat, lng, callback) {
             var mapOptions = {
                 zoom: 5,
-                center: new google.maps.LatLng(-18.482051, 32.810217),
+                center: new google.maps.LatLng(-18.217540, 33.127108),
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 disableDefaultUI: true,
                 styles: [{
@@ -230,7 +230,7 @@ define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/
         checkData: function (el) {
             return typeof this.data[el] !== 'undefined';
         },
-        createCluster: function (el) {
+        createCluster: function (el, callback) {
             var mcOptions = {
                 gridSize: 2,
                 styles: [{
@@ -241,15 +241,16 @@ define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/
                         'textColor': "#000", //(string) The text color.
                         'textSize': 12, //(number) The text size.
                         'backgroundPosition': "0 0", // (string) The position of the backgound x, y.
-                        'anchorIcon': [4, 4] // (Array) The anchor position of the icon x, y.
+                        'anchorIcon': [4.5, 4.5] // (Array) The anchor position of the icon x, y.
                     }],
-                maxZoom: 20
+                callback: callback,
+                maxZoom: 21
             };
             var myCluster = new MarkerClusterer(this.map, this.data[el].data, mcOptions);
             this.clusters[el] = [];
             this.clusters[el].push(myCluster);
         },
-        createClusters: function (el, separator) {
+        createClusters: function (el, callback, separator) {
             this.clusters[el] = [];
             var firstData = [], secondData = [];
             _.each(this.data[el].data, function (item, index, list) {
@@ -269,9 +270,10 @@ define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/
                         'textColor': "#000", //(string) The text color.
                         'textSize': 12, //(number) The text size.
                         'backgroundPosition': "0 0", // (string) The position of the backgound x, y.
-                        'anchorIcon': [9, 9] // (Array) The anchor position of the icon x, y.
+                        'anchorIcon': [9, 9] // (Array) The anchor position of the icon x, y.                      
                     }],
-                maxZoom: 20
+                maxZoom: 21,
+                callback: callback
             };
             var first = new MarkerClusterer(this.map, firstData, firstOp);
             this.clusters[el].push(first);
@@ -285,8 +287,10 @@ define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/
                         'textColor': "#000", //(string) The text color.
                         'textSize': 12, //(number) The text size.
                         'backgroundPosition': '-9 0', // (string) The position of the backgound x, y.
-                        'anchorIcon': [0,0] // (Array) The anchor position of the icon x, y.
-                    }]
+                        'anchorIcon': [0, 0] // (Array) The anchor position of the icon x, y.
+                    }],
+                maxZoom: 21,
+                callback: callback
             };
             var second = new MarkerClusterer(this.map, secondData, secondOp);
             this.clusters[el].push(second);
@@ -298,6 +302,10 @@ define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/
                     list[i] = [];
                 }
             });
+        },
+        resetMap: function () {
+            this.map.setZoom(5);
+            this.map.setCenter(new google.maps.LatLng(-18.217540, 33.127108));
         }
     };
     return gmap;

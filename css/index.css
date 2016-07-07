@@ -188,7 +188,6 @@ h2{
     color: #fff;
     background-color: #00abbd;
 }
-
 .nav-sidebar.well{
     padding: 5px;
 }
@@ -206,12 +205,30 @@ h2{
 #indicadores_title.side-4 {
     border: solid 2px #f37020;
 }
-#indicadores_title.side-5 {
+#indicadores_title.side-5, #legendas .side-5 {
     border: solid 2px #fdb934;
 }
-#indicadores_title.side-6 {
+#indicadores_title.side-6, #legendas.side-6 {
     border: solid 2px #51b747;
 }
 #indicadores_title.side-7 {
     border: solid 2px #00abbd;
+}
+
+#legendas > div{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-align: center;
+    background-color: #fff;
+}
+#legendas ul li {
+    text-align: left;
+    list-style-type: none;
+}
+#legendas ul li img{
+    padding: 2px;
+    margin-bottom: 2px;   
 }

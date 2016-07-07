@@ -4,6 +4,7 @@ define(['gmap', 'handlebars', 'text!../partials/instaladores.hbs', 'text!../part
     var reqData = {};
     function renderInstaladores() {
         $("#indicadores").load('/partials/instaladores_menu.html', function () {
+            $("#legendas").hide();
             $("#btn_search_instaladores").click(function () {
                 reqData.marca = $("#btn-marca").val();
                 reqData.categoria = $("#btn-categoria").val();
@@ -30,33 +31,55 @@ define(['gmap', 'handlebars', 'text!../partials/instaladores.hbs', 'text!../part
             gmap.clearCuster('instaladores');
             parseData(collection);
             if (JSON.parse(req).marca === 'GOTv/DSTv') {
+                $("#legendas").show();
                 gmap.pushDifferentPoints('instaladores', collection, dataDetail, ['tipo', 'Instalador']);
-                gmap.createClusters('instaladores', 'Gomagaiver');
+                gmap.createClusters('instaladores', callback, 'Gomagaiver');
             } else {
+                $("#legendas").hide();
                 gmap.pushPoints('instaladores', collection, dataDetail);
-                gmap.createCluster('instaladores');
+                gmap.createCluster('instaladores', callback);
             }
         });
+    }
+    function callback(markers) {
+        var data = _.map(markers, function (item) {
+            var inst = dataInstaladores[item.id];
+            return {
+                id: item.id,
+                foto: inst.foto,
+                nome: inst.nome,
+                apelido: inst.apelido,
+                tipo: inst.tipo,
+                categoria: inst.categoria
+            };
+        });
+        renderDetails(data);
     }
     function parseData(col) {
         dataInstaladores = {};
         _.each(col.features, function (el, i, list) {
             dataInstaladores[el.properties.id] = el.properties;
             dataInstaladores[el.properties.id]['foto'] = "assets/avatar.png";
+            var fullname = el.properties.fullname.split(" ");
+            dataInstaladores[el.properties.id].nome = fullname[0];
+            dataInstaladores[el.properties.id].apelido = fullname.pop();
         });
     }
-    function renderDetails() {
+    function renderDetails(instaladores) {
         $("#instaladores").remove();
-        var data = {instaladores: _.chunk(_.toArray(dataInstaladores), 4)};
+        var data = {instaladores: _.chunk(_.toArray(instaladores), 4)};
         var theTemplate = hbs.compile(hbs_instaladores);
         $("#details").append(theTemplate(data));
         $("#instaladores a").click(function () {
             dataDetail($(this).data("id"));
         });
+        $("#sel_detail").click();
     }
     function dataDetail(inst) {
+        var pInst = true;
         if (typeof inst === 'object') {
             inst = inst.id;
+            pInst = false;
         }
         $("#instaladores").hide();
         var data = dataInstaladores[inst];
@@ -64,7 +87,7 @@ define(['gmap', 'handlebars', 'text!../partials/instaladores.hbs', 'text!../part
         $("#details").append(theTemplate(data));
         $("#instalador button").click(function () {
             $("#instalador").remove();
-            if ($("#instaladores").size() !== 0) {
+            if (pInst) {
                 $("#instaladores").show();
             } else {
                 $("#sel_map").click();
@@ -73,6 +96,7 @@ define(['gmap', 'handlebars', 'text!../partials/instaladores.hbs', 'text!../part
         $("#sel_detail a").click();
     }
     function clearInstaladores() {
+        $("#legendas").hide();
         var btn = $('#btn-marca');
         btn.val('');
         btn.find('.btn-text').text('Escolha a Marca');
@@ -82,6 +106,7 @@ define(['gmap', 'handlebars', 'text!../partials/instaladores.hbs', 'text!../part
         $("#instaladores").remove();
         $("#instalador").remove();
         $("#sel_map").click();
+        gmap.resetMap();
     }
     return({
         addData: addDataInstaladores,
