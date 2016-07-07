@@ -76,6 +76,7 @@ define(['gmap', 'handlebars', 'text!../partials/instaladores.hbs', 'text!../part
         $("#sel_detail").click();
     }
     function dataDetail(inst) {
+        $(window).scrollTop(0);
         var pInst = true;
         if (typeof inst === 'object') {
             inst = inst.id;
