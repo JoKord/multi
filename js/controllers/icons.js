@@ -7,7 +7,9 @@ define(function () {
         'zap_agente': 'assets/icons/point_alt.png',
         'instaladores': 'assets/icons/yellow_dot.png',
         'instaladores_Instalador': 'assets/icons/yellow_dot_alt.png',
-        'cluster_instaladores': 'assets/icons/cluster_inst.png'
+        'cluster_instaladores': 'assets/icons/cluster_inst.png',
+        'accounts': 'assets/icons/orange_dot.png',
+        'cluster_accounts': 'assets/icons/orange_dot.png'
     };
     
     return {

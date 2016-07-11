@@ -49,7 +49,7 @@ define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/
         pushPoints: function (type, points, callback) {
             this.data[type] = this.data[type] || {};
             this.data[type]['visible'] = true;
-            this.data[type]['data'] = [];
+            this.data[type]['data'] = this.data[type]['data'] || [] ;
             var icon = {
                 url: icons.getIconURL(type),
                 size: new google.maps.Size(16, 16),
@@ -211,8 +211,13 @@ define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/
             }
         },
         hideFeatures: function (el) {
+            console.log(el);
+            console.log(this.data[el]);
+            x = this.data[el];
             if (typeof this.data[el] !== 'undefined') {
+                console.log(this.data[el].length);
                 _.each(this.data[el].data, function (el, index, list) {
+                    //console.log(el);
                     el.setMap(null);
                 });
                 this.data[el].visible = false;

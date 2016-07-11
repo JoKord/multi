@@ -3,7 +3,7 @@ define(['gmap', 'handlebars', 'text!../partials/instaladores.hbs', 'text!../part
     var dataInstaladores = {};
     var reqData = {};
     function renderInstaladores() {
-        $("#indicadores").load('/partials/instaladores_menu.html', function () {
+        $("#indicadores").load('partials/instaladores_menu.html', function () {
             $("#legendas").hide();
             $("#btn_search_instaladores").click(function () {
                 reqData.marca = $("#btn-marca").val();

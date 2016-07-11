@@ -1,4 +1,4 @@
-define(['inst'], function (inst) {
+define(['clientes','inst'], function (clientes,inst) {
     function initialize() {
         $('.dropdown-toggle').dropdown();
         $(document).ready(function () {
@@ -26,6 +26,7 @@ define(['inst'], function (inst) {
             case 'clientes':
                 $("#indicadores_title").text("Clientes");
                 $("#indicadores_title").addClass('side-4');
+                clientes.addData();
                 break;
             case 'instaladores':
                 $("#indicadores_title").text("Instaladores");

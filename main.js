@@ -31,7 +31,7 @@ requirejs.config({
         gmap: "controllers/gmap",
         clusterer: "vendor/markercluster/markerclusterer",
         sidebar: "controllers/sidebar",
-        datafactory: "controllers/data",
+        clientes: "controllers/clientes",
         inst: "controllers/instaladores",
         conc: "controllers/concorrencia",
         icons: "controllers/icons"
