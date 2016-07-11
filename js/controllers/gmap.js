@@ -211,13 +211,8 @@ define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/
             }
         },
         hideFeatures: function (el) {
-            console.log(el);
-            console.log(this.data[el]);
-            x = this.data[el];
             if (typeof this.data[el] !== 'undefined') {
-                console.log(this.data[el].length);
                 _.each(this.data[el].data, function (el, index, list) {
-                    //console.log(el);
                     el.setMap(null);
                 });
                 this.data[el].visible = false;
@@ -237,7 +232,7 @@ define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/
         },
         createCluster: function (el, callback) {
             var mcOptions = {
-                gridSize: 2,
+                gridSize: 10,
                 styles: [{
                         'url': icons.getIconURL('cluster_' + el), // (string) The image url.
                         'height': 9, // (number) The image height.

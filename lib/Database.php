@@ -78,7 +78,7 @@ class Database {
     }
 
     public function getAccounts($offset, $status = 'Active') {
-        $q = "SELECT ST_AsGeoJSON(geom) as geojson, conta.account_number as acc_n, conta.endereco, conta.customer_number as cust_n, " .
+        $q = "SELECT ST_AsGeoJSON(geom) as geojson, conta.account_number as id, conta.endereco, conta.customer_number as cust_n, " .
                 " tipo_conta.descricao as tipo_conta, conta.id_bairro, conta.id_cidade, conta.id_localidade, conta.id_distrito, conta.id_provincia, " .
                 " nome, customer_type " .
                 " FROM  clientes.conta conta " .
@@ -111,6 +111,19 @@ class Database {
             array_push($geojson['features'], $feature);
         }
         return $geojson;
+    }
+    public function getConta($id) {
+        $q = "SELECT c.account_number, c.customer_number, nome, tc.descricao as tipo_conta, pg.descricao as grupo, c.endereco, c.cod_postal, c.id_bairro, c.id_cidade, c.id_localidade, c.id_distrito, c.id_provincia, array_agg(decoder_model) as d_model, array_agg(decoder_number) as d_number, array_agg(smartcard_model) as s_model, array_agg(smartcard_number) as s_number, array_agg(product_code) as p_code, array_agg(psnr) as psnr, array_agg(acc_status) as status, array_agg(pay_method) as pay, array_agg(prod_start_dt) as start_dt, array_agg(last_rec_dt) as last_rec_dt, array_agg(last_dis_dt) as last_dis_dt, array_agg(next_inv_dt) as last_inv_dt FROM clientes.conta c 
+              INNER JOIN clientes.cliente cl ON cl.customer_number = c.customer_number INNER JOIN clientes.tipo_conta tc ON id_tipo = id_acc_type INNER JOIN clientes.produto_grupo pg ON id_grp = id_prod_grp INNER JOIN clientes.decoders_account da ON da.account_number = $id
+              WHERE c.account_number = $id GROUP BY c.account_number, cl.nome, c.customer_number, tc.descricao, pg.descricao, c.endereco, c.cod_postal, c.id_bairro, c.id_cidade, c.id_localidade, c.id_distrito, c.id_provincia";
+        $rs = pg_query($q);
+        if (!$rs) {
+            echo 'An SQL error occured.\n';
+            exit;
+        }
+        while ($row = pg_fetch_assoc($rs)) {
+            return $row;
+        }
     }
 
 }
