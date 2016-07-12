@@ -206,7 +206,7 @@ define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/
         clearPoints: function (el) {
             this.hideFeatures(el);
             if (typeof this.data[el] !== 'undefined') {
-                this.data[el].data = {};
+                this.data[el].data = [];
                 this.data[el].visible = false;
             }
         },

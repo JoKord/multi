@@ -117,6 +117,6 @@
 #conta .acc.acc_disconnected{
     color: red;   
 }
-#conta acc.acc_cancelled{
+#conta .acc.acc_cancelled{
     color: grey;
 }

@@ -26,7 +26,7 @@ define(['clientes','inst'], function (clientes,inst) {
             case 'clientes':
                 $("#indicadores_title").text("Clientes");
                 $("#indicadores_title").addClass('side-4');
-                clientes.addData();
+                clientes.render();
                 break;
             case 'instaladores':
                 $("#indicadores_title").text("Instaladores");

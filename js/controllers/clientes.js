@@ -1,20 +1,55 @@
-define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/conta.hbs'], function (gmap, hbs, hbs_contas, hbs_conta) {
+define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/conta.hbs', 'data_produtos'], function (gmap, hbs, hbs_contas, hbs_conta, produtos) {
     var OFFSET = 2000;
     var dataContas = {};
-
-    function getPartialAccounts(it) {
-        $.getJSON('data/getAccounts.php', {data: it}, function (col) {
-            console.log(col);
-            parseData(col, 0);
+    var reqData = {};
+    function renderClientes() {
+        $("#indicadores").load('partials/contas_menu.html', function () {
+            $("#legendas").hide();
+            $(".dropdown-menu.conta a").click(function () {
+                var btn = $(this).parents('.selector').find('button');
+                if (btn[0].id === 'btn-grp') {
+                    renderProducts($(this).text());
+                }
+                btn.find('.btn-text').text($(this).text());
+                btn.val($(this).text());
+            });
+            $("#btn_search_contas").click(function () {
+                reqData.status = $("#btn-status").val();
+                reqData.grp = mapGroupValue($("#btn-grp").val());
+                reqData.pro = $("#btn-produto").val();
+                getAccounts(reqData);
+            });
+            $("#btn_clear_contas").click(function () {
+                gmap.hideFeatures('accounts');
+                gmap.clearCuster('accounts');
+                clearAccounts();
+            });
+        });
+    }
+    function renderProducts(grp) {
+        $("#produtos-menu").empty();
+        _.each(produtos[grp], function (item) {
+            $("#produtos-menu").append("<li><a href='#'>" + item + "</a></li>");
+        });
+        $(".produtos-menu-title").removeClass('hidden');
+        $(".dropdown-menu.conta a").click(function () {
+            var btn = $(this).parents('.selector').find('button');
+            btn.find('.btn-text').text($(this).text());
+            btn.val($(this).text());
+        });
+    }
+    function getPartialAccounts(reqData) {
+        $.getJSON('data/getAccounts.php', {data: reqData}, function (col) {
+            reqData = JSON.parse(reqData);
+            parseData(col, reqData.it);
             gmap.pushPoints('accounts', col, null);
-            gmap.createCluster('accounts', callback);
-//            resData = col.features.length;
-//            if (resData === OFFSET) {
-//                it++;
-//                getPartialAccounts(it);
-//            } else {
-//                gmap.createCluster('accounts', callback);
-//            }
+            var resData = col.features.length;
+            if (resData === OFFSET) {
+                reqData.it = reqData.it + 1;
+                getPartialAccounts(JSON.stringify(reqData));
+            } else {
+                gmap.createCluster('accounts', callback);
+            }
         });
     }
     function callback(markers) {
@@ -32,11 +67,24 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
     }
     function parseData(col, it) {
         if (it === 0) {
-            dataContas = {};
+            dataContas = {count: 0};
         }
         _.each(col.features, function (el, i, list) {
             dataContas[el.properties.id] = el.properties;
+            dataContas.count++;
         });
+    }
+    function mapGroupValue(grp) {
+        switch (grp) {
+            case 'Access':
+                return 1;
+            case 'Commercial':
+                return 2;
+            case 'Compact':
+                return 3;
+            default:
+                return "";
+        }
     }
     function renderDetails(contas) {
         $("#contas").remove();
@@ -49,7 +97,6 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
         $("#sel_detail").click();
     }
     function dataDetail(contaID) {
-        console.log("IN");
         $(window).scrollTop();
         var pConta = true;
         if (typeof contaID === 'object') {
@@ -58,7 +105,6 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
         }
         $("#contas").hide();
         $.getJSON('data/getConta.php', {data: contaID}, function (conta) {
-            console.log(conta);
             var data = {
                 acc_n: contaID,
                 foto: "assets/avatar.png",
@@ -93,7 +139,6 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
                 };
                 data.produtos.push(products);
             });
-            console.log(data);
             var theTemplate = hbs.compile(hbs_conta);
             $("#details").append(theTemplate(data));
             $("#conta button").click(function () {
@@ -110,10 +155,31 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
     function parseArray(st) {
         return typeof st !== 'undefined' ? st.slice(1, -1).split(',') : null;
     }
-    function getAccounts() {
-        getPartialAccounts(0);
+    function getAccounts(reqData) {
+        gmap.clearPoints('accounts');
+        gmap.clearCuster('accounts');
+        reqData.it = 0;
+        getPartialAccounts(JSON.stringify(reqData));
+    }
+    function clearAccounts() {
+        var btn = $('#btn-status');
+        btn.val('');
+        btn.find('.btn-text').text('Escolha o Estado da Conta');
+        btn = $('#btn-grp');
+        btn.val('');
+        btn.find('.btn-text').text('Escolha o Grupo Produtos');
+        btn = $("#btn-produto");
+        btn.val('');
+        btn.find('.btn-text').text('Escolha o Produto');
+        $("#produtos-menu").empty();
+        $(".produtos-menu-title").addClass('hidden');
+        $("#contas").remove();
+        $("#conta").remove();
+        $("#sel_map").click();
+        gmap.resetMap();
     }
     return {
+        render: renderClientes,
         addData: getAccounts
     };
 });

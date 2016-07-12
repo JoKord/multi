@@ -32,6 +32,7 @@ requirejs.config({
         clusterer: "vendor/markercluster/markerclusterer",
         sidebar: "controllers/sidebar",
         clientes: "controllers/clientes",
+        data_produtos: "../data/produtos",
         inst: "controllers/instaladores",
         conc: "controllers/concorrencia",
         icons: "controllers/icons"
