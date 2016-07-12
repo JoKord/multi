@@ -23,6 +23,28 @@
                                 </div>
                             </div>
                         </div>
+                    </div>                 
+                    <div class="bs-callout bs-callout-conta">
+                        <h4>Produtos</h4>
+                    {{#each produtos}}
+                        <hr>
+                        <p><b>Estado:</b> <span class="acc acc_{{toLowerCase status}}"> {{toUpperCase status}} </p>
+                        <p><b>Grupo de Produtos:</b> {{grupo}} </p>
+                        <p><b>Psnr:</b> {{psnr}} </p>
+                        <p><b>Cód. Produto</b> {{p_code}} </p>
+                        <p><b>Modelo do Decoder:</b> {{d_model}} </p>
+                        <p><b>Número do Decoder:</b> {{d_number}} </p>
+                        <p><b>Modelo do SmartCard:</b> {{s_model}} </p>
+                        <p><b>Número do SmartCard:</b> {{s_number}} </p>
+                        <p><b>Método de Pagamento:</b> {{pay}} </p>
+                        <p><b>Datas:</b></p>
+                        <ul>
+                            <li><b>Início do Produto:</b> {{st_dt}}</li>
+                            <li><b>Última Disconecção:</b> {{dis_dt}}</li>
+                            <li><b>Última Reconecção:</b> {{rec_dt}}</li>
+                            <li><b>Próximo Pagemento:</b> {{inv_dt}}</li>
+                        </ul>
+                    {{/each}}
                     </div>
                     <div class="bs-callout bs-callout-conta">
                         <h4>Localização</h4>
@@ -33,9 +55,6 @@
                         <p><b>Localidade:</b> {{localidade}} </p>
                         <p><b>Bairro:</b> {{bairro}} </p>
                         <p><b>Endereço:</b> {{endereco}} {{cod_post}} </p>
-                    </div>
-                    <div class="bs-callout bs-callout-conta">
-                        <h4>Produtos</h4>                                        
                     </div>
                 </div>
             </div>

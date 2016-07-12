@@ -97,7 +97,6 @@
     color: #f37020;
 }
 
-
 .resume .list-group-item:first-child, .resume .list-group-item:last-child{
     border-radius:0;
 }
@@ -106,4 +105,18 @@
     .resume-heading .social-btn-holder{
         padding:5px;
     }
+}
+
+#conta .acc{
+    text-decoration: underline;
+    font-weight: bold;    
+}
+#conta .acc.acc_active {
+    color:green;
+}
+#conta .acc.acc_disconnected{
+    color: red;   
+}
+#conta acc.acc_cancelled{
+    color: grey;
 }

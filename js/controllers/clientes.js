@@ -64,20 +64,7 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
                 foto: "assets/avatar.png",
                 cust_n: conta.customer_number,
                 nome: conta.nome,
-                grupo: conta.grupo,
-                d_model: parseArray(conta.d_model),
-                d_number: parseArray(conta.d_number),
-                s_model: parseArray(conta.s_model),
-                s_number: parseArray(conta.s_number),
-                p_code: parseArray(conta.d_model),
-                psnr: parseArray(conta.psnr),
-                pay: parseArray(conta.pay),
-                status: parseArray(conta.status),
                 tipo_conta: conta.tipo_conta,
-                st_dt: parseArray(conta.start_dt),
-                dis_dt: parseArray(conta.last_dis_dt),
-                inv_dt: parseArray(conta.last_inv_dt),
-                rec_dt: parseArray(conta.last_rec_dt),
                 endereco: conta.endereco.slice(1, -1),
                 cod_post: conta.cod_postal,
                 bairro: conta.id_bairro,
@@ -86,6 +73,26 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
                 distrito: conta.id_distrito,
                 provincia: conta.id_provincia
             };
+            data.produtos = [];
+            var nPro = parseArray(conta.d_model);
+            _.each(nPro, function (item, i, list) {
+                var products = {
+                    grupo: conta.grupo,
+                    d_model: parseArray(conta.d_model)[i],
+                    d_number: parseArray(conta.d_number)[i],
+                    s_model: parseArray(conta.s_model)[i],
+                    s_number: parseArray(conta.s_number)[i],
+                    p_code: parseArray(conta.d_model)[i],
+                    psnr: parseArray(conta.psnr)[i],
+                    pay: parseArray(conta.pay)[i],
+                    status: parseArray(conta.status)[i],
+                    st_dt: parseArray(conta.start_dt)[i],
+                    dis_dt: parseArray(conta.last_dis_dt)[i],
+                    inv_dt: parseArray(conta.last_inv_dt)[i],
+                    rec_dt: parseArray(conta.last_rec_dt)[i]
+                };
+                data.produtos.push(products);
+            });
             console.log(data);
             var theTemplate = hbs.compile(hbs_conta);
             $("#details").append(theTemplate(data));
