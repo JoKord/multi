@@ -1,5 +1,22 @@
 <div id="contas" class="row">
-    <h2 class="text-center contas-border">Listagem de Contas de Utilizador</h2>
+    <h2 class="text-center contas-border">Listagem de Contas de Utilizador</h2>   
+    <nav>
+        <ul class="pager">
+            <li>
+            <a href="#" data-bt="a" aria-label="Anterior" disabled>
+            <span aria-hidden="true">&laquo;</span>
+            </a>
+            </li>              
+                {{#each pages}}
+                    <li><a value="{{this}}" href="#">{{this}}</a></li>
+                {{/each}}
+            <li>
+              <a href="#" data-bt="s" aria-label="Seguinte" disabled>
+            <span aria-hidden="true">&raquo;</span>
+            </a>
+            </li>
+        </ul>
+    </nav>
     <div class="row">
         {{#each contas}}
         <div class="row stylish-panel">

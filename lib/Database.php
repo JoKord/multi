@@ -86,10 +86,6 @@ class Database {
                 " LEFT OUTER JOIN clientes.tipo_conta ON id_tipo = id_acc_type " .
                 " JOIN clientes.decoders_account dca ON  dca.account_number = conta.account_number " .
                 " LEFT OUTER JOIN clientes.produto ON produto.cod_produto = dca.product_code ";
-//                " WHERE conta.account_number IN " .
-//                " (SELECT account_number FROM clientes.decoders_account WHERE acc_status = '$status') ";
-//                " AND conta.id_prod_grp = $grp " .
-//                " OFFSET $offset LIMIT 2000 ";
         $extraparams = array();
         if ($grp != "") {
             array_push($extraparams, " conta.id_prod_grp = $grp ");

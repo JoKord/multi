@@ -1,5 +1,7 @@
+var x = null;
 define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/conta.hbs', 'data_produtos'], function (gmap, hbs, hbs_contas, hbs_conta, produtos) {
     var OFFSET = 2000;
+    var ITEMS_PER_PAGE = 5;
     var dataContas = {};
     var reqData = {};
     function renderClientes() {
@@ -42,7 +44,7 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
         $.getJSON('data/getAccounts.php', {data: reqData}, function (col) {
             reqData = JSON.parse(reqData);
             parseData(col, reqData.it);
-            gmap.pushPoints('accounts', col, null);
+            gmap.pushPoints('accounts', col, dataDetail);
             var resData = col.features.length;
             if (resData === OFFSET) {
                 reqData.it = reqData.it + 1;
@@ -67,11 +69,10 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
     }
     function parseData(col, it) {
         if (it === 0) {
-            dataContas = {count: 0};
+            dataContas = {};
         }
         _.each(col.features, function (el, i, list) {
             dataContas[el.properties.id] = el.properties;
-            dataContas.count++;
         });
     }
     function mapGroupValue(grp) {
@@ -86,15 +87,44 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
                 return "";
         }
     }
-    function renderDetails(contas) {
+    function renderDetails(contas, page) {
+        if (typeof page === 'undefined') {
+            page = 1;
+        }
         $("#contas").remove();
-        var data = {contas: _.chunk(_.toArray(contas), 4)};
+        var pagesNu = Math.ceil(contas.length / ITEMS_PER_PAGE) + 1;
+        var pageData = getPageData(contas, page);
+        var data = {contas: _.chunk(pageData, 4), pages: _.range(1, pagesNu)};
         var theTemplate = hbs.compile(hbs_contas);
         $("#details").append(theTemplate(data));
+        $("#contas .pager a[value=" + page + "]").addClass('active');
         $("#contas a").click(function () {
             dataDetail($(this).data("id"));
         });
+        $("#contas .pager a").click(function (e) {
+            var btn = $(this).data('bt');
+            if (typeof btn !== 'undefined') {
+                var el = $("#contas .pager");
+                var maxPages = el.find('li:nth-last-child(2)').text();
+                var cPage = el.find("a.active").text();
+                if (btn === 's' && cPage !== maxPages) {
+                    page = ++cPage;
+                } else if (btn === 'a' && cPage !== '1') {
+                    page = --cPage;
+                } else {
+                    page = cPage;
+                }
+            } else {
+                page = +$(this).text();
+            }
+            renderDetails(contas, page);
+        });
         $("#sel_detail").click();
+    }
+    function getPageData(contas, page) {
+        var lastIndex = (page * ITEMS_PER_PAGE);
+        var startIndex = --page * ITEMS_PER_PAGE;
+        return contas.slice(startIndex, lastIndex);
     }
     function dataDetail(contaID) {
         $(window).scrollTop();
@@ -105,6 +135,7 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
         }
         $("#contas").hide();
         $.getJSON('data/getConta.php', {data: contaID}, function (conta) {
+            console.log(conta);
             var data = {
                 acc_n: contaID,
                 foto: "assets/avatar.png",
@@ -120,15 +151,15 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
                 provincia: conta.id_provincia
             };
             data.produtos = [];
-            var nPro = parseArray(conta.d_model);
-            _.each(nPro, function (item, i, list) {
+            var nStatus = parseArray(conta.status);
+            _.each(nStatus, function (item, i, list) {
                 var products = {
                     grupo: conta.grupo,
                     d_model: parseArray(conta.d_model)[i],
                     d_number: parseArray(conta.d_number)[i],
                     s_model: parseArray(conta.s_model)[i],
                     s_number: parseArray(conta.s_number)[i],
-                    p_code: parseArray(conta.d_model)[i],
+                    p_code: parseArray(conta.p_code)[i],
                     psnr: parseArray(conta.psnr)[i],
                     pay: parseArray(conta.pay)[i],
                     status: parseArray(conta.status)[i],
@@ -153,7 +184,7 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
         });
     }
     function parseArray(st) {
-        return typeof st !== 'undefined' ? st.slice(1, -1).split(',') : null;
+        return st !== '{NULL}' ? st.slice(1, -1).split(',') : ["Não Definido."];
     }
     function getAccounts(reqData) {
         gmap.clearPoints('accounts');
@@ -162,6 +193,8 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
         getPartialAccounts(JSON.stringify(reqData));
     }
     function clearAccounts() {
+        gmap.resetMap();
+        $("#sel_map").click();
         var btn = $('#btn-status');
         btn.val('');
         btn.find('.btn-text').text('Escolha o Estado da Conta');
@@ -175,8 +208,6 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
         $(".produtos-menu-title").addClass('hidden');
         $("#contas").remove();
         $("#conta").remove();
-        $("#sel_map").click();
-        gmap.resetMap();
     }
     return {
         render: renderClientes,
