@@ -80,15 +80,16 @@ class Database {
     public function getAccounts($offset, $status, $grp, $pro) {
         $q = "SELECT ST_AsGeoJSON(geom) as geojson, conta.account_number as id, conta.endereco, conta.customer_number as cust_n, " .
                 " tipo_conta.descricao as tipo_conta, conta.id_bairro, conta.id_cidade, conta.id_localidade, conta.id_distrito, conta.id_provincia, " .
-                " nome, customer_type " .
+                " nome, customer_type, acc_status, pay_method, product_code, pg.descricao as grupo " .
                 " FROM  clientes.conta conta " .
                 " LEFT OUTER JOIN clientes.cliente ON cliente.customer_number = conta.customer_number " .
                 " LEFT OUTER JOIN clientes.tipo_conta ON id_tipo = id_acc_type " .
-                " JOIN clientes.decoders_account dca ON  dca.account_number = conta.account_number " .
-                " LEFT OUTER JOIN clientes.produto ON produto.cod_produto = dca.product_code ";
+                " LEFT OUTER JOIN clientes.decoders_account dca ON  dca.account_number = conta.account_number " .
+                " LEFT OUTER JOIN clientes.produto p ON p.cod_produto = dca.product_code ".
+                " LEFT OUTER JOIN clientes.produto_grupo pg ON pg.id_grp = p.id_prod_grp";
         $extraparams = array();
         if ($grp != "") {
-            array_push($extraparams, " conta.id_prod_grp = $grp ");
+            array_push($extraparams, " (conta.account_number IN (SELECT account_number FROM clientes.conta WHERE id_prod_grp = '$grp')) ");
         }
         if ($status != "" || $pro != "") {
             $dQuery = array();

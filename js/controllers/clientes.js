@@ -1,7 +1,7 @@
 var x = null;
-define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/conta.hbs', 'data_produtos'], function (gmap, hbs, hbs_contas, hbs_conta, produtos) {
+define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/conta.hbs', 'data_produtos', 'charts'], function (gmap, hbs, hbs_contas, hbs_conta, produtos, charts) {
     var OFFSET = 2000;
-    var ITEMS_PER_PAGE = 5;
+    var ITEMS_PER_PAGE = 50;
     var dataContas = {};
     var reqData = {};
     function renderClientes() {
@@ -61,8 +61,12 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
                 id: item.id,
                 nCli: conta.cust_n,
                 nome: conta.nome,
-                conta: conta.tipo_conta,
-                tipo: conta.customer_type
+                tipoco: conta.tipo_conta,
+                tipocl: conta.customer_type,
+                pay: conta.pay_method,
+                grupo: conta.grupo,
+                produto: conta.product_code,
+                estado: conta.acc_status
             };
         });
         renderDetails(data);
@@ -87,37 +91,49 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
                 return "";
         }
     }
-    function renderDetails(contas, page) {
-        if (typeof page === 'undefined') {
+    function renderDetails(contas, page, type) {
+        if (typeof page === 'undefined' || page === null) {
             page = 1;
         }
-        $("#contas").remove();
-        var pagesNu = Math.ceil(contas.length / ITEMS_PER_PAGE) + 1;
-        var pageData = getPageData(contas, page);
-        var data = {contas: _.chunk(pageData, 4), pages: _.range(1, pagesNu)};
-        var theTemplate = hbs.compile(hbs_contas);
-        $("#details").append(theTemplate(data));
-        $("#contas .pager a[value=" + page + "]").addClass('active');
-        $("#contas a").click(function () {
-            dataDetail($(this).data("id"));
-        });
-        $("#contas .pager a").click(function (e) {
-            var btn = $(this).data('bt');
-            if (typeof btn !== 'undefined') {
-                var el = $("#contas .pager");
-                var maxPages = el.find('li:nth-last-child(2)').text();
-                var cPage = el.find("a.active").text();
-                if (btn === 's' && cPage !== maxPages) {
-                    page = ++cPage;
-                } else if (btn === 'a' && cPage !== '1') {
-                    page = --cPage;
+        if (typeof type === 'undefined' || type === 'l') {
+            $("#contas").remove();
+            var pagesNu = Math.ceil(contas.length / ITEMS_PER_PAGE) + 1;
+            var pageData = getPageData(contas, page);
+            var data = {contas: _.chunk(pageData, 4), pages: _.range(1, pagesNu)};
+            var theTemplate = hbs.compile(hbs_contas);
+            $("#details").append(theTemplate(data));
+            $("#graficos").hide();
+            $("#contas .pager a[value=" + page + "]").addClass('active');
+            $("#contas a").click(function () {
+                dataDetail($(this).data("id"));
+            });
+            $("#contas .pager a").click(function (e) {
+                var btn = $(this).data('bt');
+                if (typeof btn !== 'undefined') {
+                    var el = $("#contas .pager");
+                    var maxPages = el.find('li:nth-last-child(2)').text();
+                    var cPage = el.find("a.active").text();
+                    if (btn === 's' && cPage !== maxPages) {
+                        page = ++cPage;
+                    } else if (btn === 'a' && cPage !== '1') {
+                        page = --cPage;
+                    } else {
+                        page = cPage;
+                    }
                 } else {
-                    page = cPage;
+                    page = +$(this).text();
                 }
-            } else {
-                page = +$(this).text();
-            }
-            renderDetails(contas, page);
+                renderDetails(contas, page);
+            });
+        } else {
+            $("#listagem-contas").hide();
+            $("#graficos").show();
+            addGraficos(contas);
+        }
+        $("#contas .nav li span").click(function (e) {
+            $("#contas .nav li.active").removeClass('active');
+            $(this).parent().addClass('active');
+            renderDetails(contas, null, $(this).data('type'));
         });
         $("#sel_detail").click();
     }
@@ -125,6 +141,66 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
         var lastIndex = (page * ITEMS_PER_PAGE);
         var startIndex = --page * ITEMS_PER_PAGE;
         return contas.slice(startIndex, lastIndex);
+    }
+    function addGraficos(ct) {
+        var options = {
+            width: 600,
+            height: 300,
+            is3D: true,
+            colors: ["#f37020", "#5f6eb3", "#ed008c", "#ed1b24", "#fdb934", "#51b747", "#00abbd", "#46065c", "#832a86", "#b92837", "#cc6a39", "#e29138", "#659144", "#007297"]
+        };
+        options.title = 'Produtos';
+        charts.addPieChart('g-produtos', getChartData(ct, 'produto'), options);
+        options.title = 'Grupo de Produtos';
+        charts.addPieChart('g-grupo', getChartData(ct, 'grupo'), options);
+        options.title = 'Tipo de Cliente';
+        charts.addPieChart('g-tipo-cl', getChartData(ct, 'tipocl'), options);
+        options.title = 'Tipo de Conta';
+        charts.addPieChart('g-tipo-co', getChartData(ct, 'tipoco'), options);
+        options.title = 'Métodos de Pagamento';
+        charts.addPieChart('g-pay', getChartData(ct, 'pay'), options);
+        var estados = getChartData(ct, 'estado');
+        options.colors = getColorsEstados(estados);
+        options.title = 'Estado da Conta';
+        charts.addPieChart('g-estado', estados, options);
+    }
+    function getChartData(cts, prop) {
+        var parsedData = {}, a = [];
+        parsedData[prop.toString().toUpperCase()] = 'Valor';
+        _.each(cts, function (item) {
+            parsedData[item[prop]] = ++parsedData[item[prop]] || 1;
+        });
+        _.each(parsedData, function (value, key) {
+            a.push([key, value]);
+        });
+        function Comparator(a, b) {
+            if (a[1] < b[1])
+                return 1;
+            if (a[1] > b[1])
+                return -1;
+            return 0;
+        }
+        a = a.sort(Comparator);
+        return a;
+    }
+    function getColorsEstados(e) {
+        var aC = [];
+        _.each(e, function (item) {
+            switch (item[0]) {
+                case 'Active':
+                    aC.push('#009900');
+                    break;
+                case 'Disconnected':
+                    aC.push('#990000');
+                    break;
+                case 'Cancelled':
+                    aC.push('#8f8f8f');
+                    break;
+                default:
+                    break;
+            }
+        });
+        return aC;
     }
     function dataDetail(contaID) {
         $(window).scrollTop();
@@ -193,8 +269,8 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
         getPartialAccounts(JSON.stringify(reqData));
     }
     function clearAccounts() {
-        gmap.resetMap();
         $("#sel_map").click();
+        gmap.resetMap();
         var btn = $('#btn-status');
         btn.val('');
         btn.find('.btn-text').text('Escolha o Estado da Conta');

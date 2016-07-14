@@ -29,6 +29,7 @@ requirejs.config({
         treeData: "../data/tree",
         jqueryui: "vendor/jquery-ui/jquery-ui",
         gmap: "controllers/gmap",
+        charts: "controllers/charts",
         clusterer: "vendor/markercluster/markerclusterer",
         sidebar: "controllers/sidebar",
         clientes: "controllers/clientes",

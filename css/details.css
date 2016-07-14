@@ -112,13 +112,13 @@
     font-weight: bold;    
 }
 #conta .acc.acc_active {
-    color:green;
+    color: #009900;
 }
 #conta .acc.acc_disconnected{
-    color: red;   
+    color: #990000;   
 }
 #conta .acc.acc_cancelled{
-    color: grey;
+    color: #8f8f8f;
 }
 
 .pager{
@@ -131,4 +131,31 @@
     color: #eee;
     background-color: #f37020; 
     border: 2px solid #eee;
+}
+
+.nav-pills > li.active > span, 
+.nav-pills > li.active > span:hover, 
+.nav-pills > li.active > span:focus {
+    color: #fff;
+    background-color: #f37020;
+}
+.nav-pills > li.active > span, 
+.nav-pills > li.active > span:hover, 
+.nav-pills > li.active > span:focus {
+    color: #fff;
+    background-color: #f37020;
+}
+.nav-pills li span {
+    color: #f37020;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.nav > li > span {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+}
+.nav > li > span:hover {
+    background-color: #eee;
 }
