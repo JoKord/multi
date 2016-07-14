@@ -26,6 +26,7 @@ define(['gmap', 'handlebars', 'text!../partials/instaladores.hbs', 'text!../part
         getDataInstaladores(req);
     }
     function getDataInstaladores(req) {
+        Utilities.addLoader();
         $.getJSON('data/getInstaladores.php', {data: req}, function (collection) {
             gmap.clearPoints('instaladores');
             gmap.clearCuster('instaladores');
@@ -39,6 +40,7 @@ define(['gmap', 'handlebars', 'text!../partials/instaladores.hbs', 'text!../part
                 gmap.pushPoints('instaladores', collection, dataDetail);
                 gmap.createCluster('instaladores', callback);
             }
+            Utilities.removeLoader();
             Utilities.setRegistos(collection.features.length,'instaladores-colorify');
         });
     }

@@ -59,6 +59,10 @@
                 </div>
                 <div class="col-lg-10 col-md-10 col-sm-10 col-lg-offset-2 col-md-offset-2 main">
                     <div id="map_area">
+                        <div id="loader" style="display:none;">
+                            <div><img style="margin-top: 200px;" src="assets/mc-logo-hz.png"></div>
+                            <div style="margin-top: 20px;"><img src="assets/loader.gif"></div>
+                        </div>
                         <div id="registos" class="effect1" style="display: none;"><i class="glyphicon glyphicon-tag"></i><span> Foram encontrados <b>0</b> registos.</span></div>
                         <div id="basemap"></div>
                     </div>

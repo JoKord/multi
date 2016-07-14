@@ -106,7 +106,7 @@ class Database {
                 for ($i = 0; $i < sizeof($dQuery) - 1; $i++) {
                     $extra = $extra . " " . $dQuery[$i] . "  AND ";
                 }
-                $extra = $extra . " " . $dQuery[$i] . " ";
+                $extra = $extra . " " . $dQuery[$i] . ") ";
             } else {
                 $extra = "";
             }
@@ -116,9 +116,9 @@ class Database {
         if (!empty($extraparams)) {
             $extra = " WHERE ";
             for ($i = 0; $i < sizeof($extraparams) - 1; $i++) {
-                $extra = $extra . "( " . $extraparams[$i] . " ) AND ";
+                $extra = $extra . " " . $extraparams[$i] . "  AND ";
             }
-            $extra = $extra . "( " . $extraparams[$i] . " )) ";
+            $extra = $extra . " " . $extraparams[$i] . "  ";
         } else {
             $extra = "";
         }

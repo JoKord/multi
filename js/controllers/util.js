@@ -12,6 +12,12 @@ define(function () {
             elTxt.text('');
             elTxt.removeClass();
             elTxt.parents('#registos').hide();
+        },
+        addLoader: function(){
+            $("#loader").show();
+        },
+        removeLoader: function (){
+            $("#loader").hide();
         }
     };
 });

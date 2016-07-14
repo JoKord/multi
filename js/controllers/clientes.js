@@ -1,4 +1,3 @@
-var x = null;
 define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/conta.hbs', 'data_produtos', 'charts', 'util'], function (gmap, hbs, hbs_contas, hbs_conta, produtos, charts, Utilities) {
     var OFFSET = 2000;
     var ITEMS_PER_PAGE = 50;
@@ -17,6 +16,7 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
             });
             $("#btn_search_contas").click(function () {
                 Utilities.clearRegistos();
+                $("#sel_map").click();
                 reqData.status = $("#btn-status").val();
                 reqData.grp = mapGroupValue($("#btn-grp").val());
                 reqData.pro = $("#btn-produto").val();
@@ -52,6 +52,7 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
                 reqData.it = reqData.it + 1;
                 getPartialAccounts(JSON.stringify(reqData));
             } else {
+                Utilities.removeLoader();
                 Utilities.setRegistos(gmap.data['accounts'].data.length, 'contas-colorify');
                 gmap.createCluster('accounts', callback);
             }
@@ -266,6 +267,7 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
         return st !== '{NULL}' ? st.slice(1, -1).split(',') : ["Não Definido."];
     }
     function getAccounts(reqData) {
+        Utilities.addLoader();
         gmap.clearPoints('accounts');
         gmap.clearCuster('accounts');
         reqData.it = 0;
