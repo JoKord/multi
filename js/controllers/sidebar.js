@@ -49,12 +49,12 @@ define(['clientes','inst'], function (clientes,inst) {
     function showVisualization(el) {
         if (el === 'detail') {
             $("#container_toggle").removeClass().addClass('container');
-            $("#basemap").hide();
+            $("#map_area").hide();
             $("#details").show();
         } else if (el === 'map') {
             $("#container_toggle").removeClass().addClass('container-fluid');
             $("#details").hide();
-            $("#basemap").show();
+            $("#map_area").show();
         }
     }
     return {

@@ -1,11 +1,11 @@
-define(['gmap', 'handlebars', 'text!../partials/instaladores.hbs', 'text!../partials/instalador.hbs'], function (gmap, hbs, hbs_instaladores, hbs_instalador) {
-
+define(['gmap', 'handlebars', 'text!../partials/instaladores.hbs', 'text!../partials/instalador.hbs', 'util'], function (gmap, hbs, hbs_instaladores, hbs_instalador, Utilities) {
     var dataInstaladores = {};
     var reqData = {};
     function renderInstaladores() {
         $("#indicadores").load('partials/instaladores_menu.html', function () {
             $("#legendas").hide();
             $("#btn_search_instaladores").click(function () {
+                Utilities.clearRegistos();
                 reqData.marca = $("#btn-marca").val();
                 reqData.categoria = $("#btn-categoria").val();
                 addDataInstaladores(JSON.stringify(reqData));
@@ -39,6 +39,7 @@ define(['gmap', 'handlebars', 'text!../partials/instaladores.hbs', 'text!../part
                 gmap.pushPoints('instaladores', collection, dataDetail);
                 gmap.createCluster('instaladores', callback);
             }
+            Utilities.setRegistos(collection.features.length,'instaladores-colorify');
         });
     }
     function callback(markers) {
@@ -98,6 +99,7 @@ define(['gmap', 'handlebars', 'text!../partials/instaladores.hbs', 'text!../part
     }
     function clearInstaladores() {
         $("#legendas").hide();
+        Utilities.clearRegistos();
         var btn = $('#btn-marca');
         btn.val('');
         btn.find('.btn-text').text('Escolha a Marca');

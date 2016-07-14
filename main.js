@@ -19,7 +19,7 @@ requirejs.config({
         },
         clusterer: {
             exports: 'MarkerClusterer'
-        }
+        },
     },
     paths: {
         underscore: "vendor/underscore/underscore",
@@ -36,7 +36,8 @@ requirejs.config({
         data_produtos: "../data/produtos",
         inst: "controllers/instaladores",
         conc: "controllers/concorrencia",
-        icons: "controllers/icons"
+        icons: "controllers/icons",
+        util: "controllers/util"
     }
 });
 

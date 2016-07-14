@@ -232,3 +232,19 @@ h2{
     padding: 2px;
     margin-bottom: 2px;   
 }
+
+#registos{
+    position: absolute;
+    top: 5px;
+    right: 25px;
+    z-index: 5;
+    padding: 5px;
+    background-color: white;
+    border-radius: 4px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.effect1{
+    -webkit-box-shadow: 0 10px 6px -6px #777;
+    -moz-box-shadow: 0 10px 6px -6px #777;
+    box-shadow: 0 10px 6px -6px #777;
+}

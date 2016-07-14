@@ -58,7 +58,10 @@
                     </ul>
                 </div>
                 <div class="col-lg-10 col-md-10 col-sm-10 col-lg-offset-2 col-md-offset-2 main">
-                    <div id="basemap"></div>
+                    <div id="map_area">
+                        <div id="registos" class="effect1" style="display: none;"><i class="glyphicon glyphicon-tag"></i><span> Foram encontrados <b>0</b> registos.</span></div>
+                        <div id="basemap"></div>
+                    </div>
                     <div id="details" ></div>
                 </div>
             </section>

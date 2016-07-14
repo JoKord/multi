@@ -1,5 +1,5 @@
 var x = null;
-define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/conta.hbs', 'data_produtos', 'charts'], function (gmap, hbs, hbs_contas, hbs_conta, produtos, charts) {
+define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/conta.hbs', 'data_produtos', 'charts', 'util'], function (gmap, hbs, hbs_contas, hbs_conta, produtos, charts, Utilities) {
     var OFFSET = 2000;
     var ITEMS_PER_PAGE = 50;
     var dataContas = {};
@@ -16,6 +16,7 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
                 btn.val($(this).text());
             });
             $("#btn_search_contas").click(function () {
+                Utilities.clearRegistos();
                 reqData.status = $("#btn-status").val();
                 reqData.grp = mapGroupValue($("#btn-grp").val());
                 reqData.pro = $("#btn-produto").val();
@@ -30,6 +31,7 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
     }
     function renderProducts(grp) {
         $("#produtos-menu").empty();
+        $(".produtos-menu-title").find('.btn-text').text('Escolha o Produto');
         _.each(produtos[grp], function (item) {
             $("#produtos-menu").append("<li><a href='#'>" + item + "</a></li>");
         });
@@ -50,6 +52,7 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
                 reqData.it = reqData.it + 1;
                 getPartialAccounts(JSON.stringify(reqData));
             } else {
+                Utilities.setRegistos(gmap.data['accounts'].data.length, 'contas-colorify');
                 gmap.createCluster('accounts', callback);
             }
         });
@@ -271,6 +274,7 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
     function clearAccounts() {
         $("#sel_map").click();
         gmap.resetMap();
+        Utilities.clearRegistos();
         var btn = $('#btn-status');
         btn.val('');
         btn.find('.btn-text').text('Escolha o Estado da Conta');
