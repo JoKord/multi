@@ -1,5 +1,5 @@
-var x;
 define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/api/js?v=3'], function (_, icons) {
+    "use strict";
     var gmap = {
         map: {},
         data: {},

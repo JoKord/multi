@@ -1,4 +1,5 @@
 define(function () {
+    "use strict";
     return{
         setRegistos: function (s, c) {
             var elTxt = $("#registos span b");

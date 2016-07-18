@@ -41,5 +41,6 @@ requirejs.config({
 });
 
 requirejs(['app'], function (app) {
+    "use strict";
     app.initialize();
 });

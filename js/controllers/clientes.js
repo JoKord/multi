@@ -1,4 +1,5 @@
 define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/conta.hbs', 'data_produtos', 'charts', 'util'], function (gmap, hbs, hbs_contas, hbs_conta, produtos, charts, Utilities) {
+    "use strict";
     var OFFSET = 2000;
     var ITEMS_PER_PAGE = 50;
     var dataContas = {};
@@ -105,6 +106,7 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
             var pageData = getPageData(contas, page);
             var data = {contas: _.chunk(pageData, 4), pages: _.range(1, pagesNu)};
             var theTemplate = hbs.compile(hbs_contas);
+            $("#details .center-details").hide();
             $("#details").append(theTemplate(data));
             $("#graficos").hide();
             $("#contas .pager a[value=" + page + "]").addClass('active');
@@ -215,10 +217,9 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
         }
         $("#contas").hide();
         $.getJSON('data/getConta.php', {data: contaID}, function (conta) {
-            console.log(conta);
             var data = {
                 acc_n: contaID,
-                foto: "assets/avatar.png",
+                foto: conta.foto || "assets/avatar_cli.png",
                 cust_n: conta.customer_number,
                 nome: conta.nome,
                 tipo_conta: conta.tipo_conta,
@@ -251,6 +252,7 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
                 data.produtos.push(products);
             });
             var theTemplate = hbs.compile(hbs_conta);
+            $("#details .center-details").hide();
             $("#details").append(theTemplate(data));
             $("#conta button").click(function () {
                 $("#conta").remove();
@@ -274,8 +276,6 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
         getPartialAccounts(JSON.stringify(reqData));
     }
     function clearAccounts() {
-        $("#sel_map").click();
-        gmap.resetMap();
         Utilities.clearRegistos();
         var btn = $('#btn-status');
         btn.val('');
@@ -290,6 +290,11 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
         $(".produtos-menu-title").addClass('hidden');
         $("#contas").remove();
         $("#conta").remove();
+        window.setTimeout(function () {
+            $("#sel_map").click();
+            gmap.resetMap();
+            $("#details .center-details").show();
+        }, 250);
     }
     return {
         render: renderClientes,

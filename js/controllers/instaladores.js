@@ -1,4 +1,5 @@
 define(['gmap', 'handlebars', 'text!../partials/instaladores.hbs', 'text!../partials/instalador.hbs', 'util'], function (gmap, hbs, hbs_instaladores, hbs_instalador, Utilities) {
+    "use strict";
     var dataInstaladores = {};
     var reqData = {};
     function renderInstaladores() {
@@ -41,7 +42,7 @@ define(['gmap', 'handlebars', 'text!../partials/instaladores.hbs', 'text!../part
                 gmap.createCluster('instaladores', callback);
             }
             Utilities.removeLoader();
-            Utilities.setRegistos(collection.features.length,'instaladores-colorify');
+            Utilities.setRegistos(collection.features.length, 'instaladores-colorify');
         });
     }
     function callback(markers) {
@@ -62,7 +63,7 @@ define(['gmap', 'handlebars', 'text!../partials/instaladores.hbs', 'text!../part
         dataInstaladores = {};
         _.each(col.features, function (el, i, list) {
             dataInstaladores[el.properties.id] = el.properties;
-            dataInstaladores[el.properties.id]['foto'] = "assets/avatar.png";
+            dataInstaladores[el.properties.id]['foto'] = el.properties.foto || "assets/avatar_inst.png";
             var fullname = el.properties.fullname.split(" ");
             dataInstaladores[el.properties.id].nome = fullname[0];
             dataInstaladores[el.properties.id].apelido = fullname.pop();
@@ -72,6 +73,7 @@ define(['gmap', 'handlebars', 'text!../partials/instaladores.hbs', 'text!../part
         $("#instaladores").remove();
         var data = {instaladores: _.chunk(_.toArray(instaladores), 4)};
         var theTemplate = hbs.compile(hbs_instaladores);
+        $("#details .center-details").hide();
         $("#details").append(theTemplate(data));
         $("#instaladores a").click(function () {
             dataDetail($(this).data("id"));
@@ -88,6 +90,7 @@ define(['gmap', 'handlebars', 'text!../partials/instaladores.hbs', 'text!../part
         $("#instaladores").hide();
         var data = dataInstaladores[inst];
         var theTemplate = hbs.compile(hbs_instalador);
+        $("#details .center-details").hide();
         $("#details").append(theTemplate(data));
         $("#instalador button").click(function () {
             $("#instalador").remove();
@@ -110,8 +113,11 @@ define(['gmap', 'handlebars', 'text!../partials/instaladores.hbs', 'text!../part
         btn.find('.btn-text').text('Escolha a Categoria');
         $("#instaladores").remove();
         $("#instalador").remove();
-        $("#sel_map").click();
-        gmap.resetMap();
+        window.setTimeout(function () {
+            $("#sel_map").click();
+            gmap.resetMap();
+            $("#details .center-details").show();
+        }, 250);
     }
     return({
         addData: addDataInstaladores,

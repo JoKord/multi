@@ -1,4 +1,5 @@
 define(['goog!visualization,1,packages:[corechart]'], function () {
+    "use strict";
     return {
         addPieChart: function (el, data, opt) {
             var chartData = new google.visualization.arrayToDataTable(data);
