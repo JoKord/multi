@@ -27,6 +27,31 @@
     border-bottom: solid 2px #fdb934;
     padding: 2px;
 }
+.contas-colorify{
+    color: #f37020;
+}
+.contas-border{
+    border-top: solid 2px #f37020;
+    border-bottom: solid 2px #f37020;
+    padding: 2px;
+}
+.btn-conta{
+    color: #fff;
+    background-image: -webkit-linear-gradient(top, #f37020 0%, #f58f51 100%);
+    background-image: -o-linear-gradient(top, #f37020 0%, #f58f51 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#f37020), to(#f58f51));
+    background-image: linear-gradient(to bottom, #f37020 0%, #f58f51 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f37020', endColorstr='#f58f51', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+    background-repeat: repeat-x;
+    border-color: #f58f51;
+}
+.btn-conta:hover{
+    color: #fff;
+    background-color: #f37020;
+    background-position: 0 -15px;
+}
+
 .img-small{
     width: 85px;
     height: 85px;
@@ -62,9 +87,14 @@
 .bs-callout-danger {
     border-left-color: #fdb934;
 }
-
+.bs-callout-conta{
+    border-left-color: #f37020;
+}
 .bs-callout-danger h4{
     color: #fdb934;
+}
+.bs-callout-conta h4{
+    color: #f37020;
 }
 
 .resume .list-group-item:first-child, .resume .list-group-item:last-child{
@@ -75,4 +105,57 @@
     .resume-heading .social-btn-holder{
         padding:5px;
     }
+}
+
+#conta .acc{
+    text-decoration: underline;
+    font-weight: bold;    
+}
+#conta .acc.acc_active {
+    color: #009900;
+}
+#conta .acc.acc_disconnected{
+    color: #990000;   
+}
+#conta .acc.acc_cancelled{
+    color: #8f8f8f;
+}
+
+.pager{
+    margin: 5px 0px;
+}
+.pager a {
+    color: #f37020;
+}
+.pager li > a.active {
+    color: #eee;
+    background-color: #f37020; 
+    border: 2px solid #eee;
+}
+
+.nav-pills > li.active > span, 
+.nav-pills > li.active > span:hover, 
+.nav-pills > li.active > span:focus {
+    color: #fff;
+    background-color: #f37020;
+}
+.nav-pills > li.active > span, 
+.nav-pills > li.active > span:hover, 
+.nav-pills > li.active > span:focus {
+    color: #fff;
+    background-color: #f37020;
+}
+.nav-pills li span {
+    color: #f37020;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.nav > li > span {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+}
+.nav > li > span:hover {
+    background-color: #eee;
 }

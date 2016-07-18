@@ -19,7 +19,7 @@ requirejs.config({
         },
         clusterer: {
             exports: 'MarkerClusterer'
-        }
+        },
     },
     paths: {
         underscore: "vendor/underscore/underscore",
@@ -29,12 +29,15 @@ requirejs.config({
         treeData: "../data/tree",
         jqueryui: "vendor/jquery-ui/jquery-ui",
         gmap: "controllers/gmap",
+        charts: "controllers/charts",
         clusterer: "vendor/markercluster/markerclusterer",
         sidebar: "controllers/sidebar",
-        datafactory: "controllers/data",
+        clientes: "controllers/clientes",
+        data_produtos: "../data/produtos",
         inst: "controllers/instaladores",
         conc: "controllers/concorrencia",
-        icons: "controllers/icons"
+        icons: "controllers/icons",
+        util: "controllers/util"
     }
 });
 

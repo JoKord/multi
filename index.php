@@ -6,10 +6,10 @@
         <link rel="stylesheet" href="js/vendor/bootstrap/css/bootstrap.css">
         <link rel="stylesheet" href="js/vendor/bootstrap/css/bootstrap-theme.css">
         <link rel="stylesheet" href="js/vendor/dynatree/skin/ui.dynatree.css">
-        <link rel="stylesheet" href="/css/index.css">
-        <link rel="stylesheet" href="/css/details.css">
-        <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
-        <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="css/index.css">
+        <link rel="stylesheet" href="css/details.css">
+        <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
     </head>
     <body>
         <nav class="navbar navbar-default navbar-fixed-top">
@@ -21,7 +21,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#"><img src="/assets/mc-logo-hz.png"></a>
+                    <a class="navbar-brand" href="#"><img src="assets/mc-logo-hz.png"></a>
                 </div>
                 <form class="navbar-form navbar-right" role="login">
                     <div class="input-group">
@@ -58,7 +58,14 @@
                     </ul>
                 </div>
                 <div class="col-lg-10 col-md-10 col-sm-10 col-lg-offset-2 col-md-offset-2 main">
-                    <div id="basemap"></div>
+                    <div id="map_area">
+                        <div id="loader" style="display:none;">
+                            <div><img style="margin-top: 200px;" src="assets/mc-logo-hz.png"></div>
+                            <div style="margin-top: 20px;"><img src="assets/loader.gif"></div>
+                        </div>
+                        <div id="registos" class="effect1" style="display: none;"><i class="glyphicon glyphicon-tag"></i><span> Foram encontrados <b>0</b> registos.</span></div>
+                        <div id="basemap"></div>
+                    </div>
                     <div id="details" ></div>
                 </div>
             </section>

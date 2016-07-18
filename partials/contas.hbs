@@ -1,0 +1,70 @@
+<div id="contas" class="row" style="margin-top:5px">
+    <ul class="nav nav-pills">
+        <li role="presentation" class="active"><span data-type="l" href="#" >Listagem</span></li>
+        <li role="presentation"><span data-type="g" href="#" >Gráficos</span></li>
+    </ul>
+    <div id="listagem-contas">
+        <h2 class="text-center contas-border">Listagem de Contas de Clientes</h2>   
+        <nav>
+            <ul class="pager">
+                <li>
+                <a href="#" data-bt="a" aria-label="Anterior" disabled>
+                <span aria-hidden="true">&laquo;</span>
+                </a>
+                </li>              
+                    {{#each pages}}
+                        <li><a value="{{this}}" href="#">{{this}}</a></li>
+                    {{/each}}
+                <li>
+                  <a href="#" data-bt="s" aria-label="Seguinte" disabled>
+                     <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="row">
+            {{#each contas}}
+            <div class="row stylish-panel">
+                {{#each this}}
+                <div class="col-md-3">
+                    <div>
+                        <h5><b>Número de Conta</b> <br> {{this.id}}</h5>
+                        <h5><b>Nome</b> <br> {{this.nome}}</h5>
+                        <h6><b>Tipo Cliente</b> <br> {{this.tipocl}}</h6>
+                        <h6><b>Tipo Conta</b> <br> {{this.tipoco}}</h6>                   
+                        <a href="#" class="btn btn-conta" data-id="{{this.id}}" title="See more"><i class="glyphicon glyphicon-user"></i> Ver mais</a>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        {{/each}}    
+        </div>
+    </div>
+    <div id="graficos">
+        <h2 class="text-center contas-border">Gráficos de Contas de Clientes</h2>
+        <div class="row">
+            <div class="col-md-6 col-lg-6 col-sm-12">
+                <div id="g-produtos"></div>
+            </div>
+            <div class="col-md-6 col-lg-6 col-sm-12">
+                <div id="g-grupo"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-lg-6 col-sm-12">
+                <div id="g-tipo-cl"></div>
+            </div>
+            <div class="col-md-6 col-lg-6 col-sm-12">
+                <div id="g-tipo-co"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-lg-6 col-sm-12">
+                <div id="g-estado"></div>
+            </div>
+            <div class="col-md-6 col-lg-6 col-sm-12">
+                <div id="g-pay"></div>
+            </div>
+        </div>
+    </div>
+</div>

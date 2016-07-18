@@ -1,4 +1,12 @@
-define(['gmap', 'sidebar', 'conc', 'bootstrap'], function (gmap, side, conc) {
+define(['gmap', 'sidebar', 'conc', 'handlebars', 'bootstrap'], function (gmap, side, conc, hbs) {
+    hbs.registerHelper('toUpperCase', function (str) {
+        return str.toUpperCase();
+    });
+
+    hbs.registerHelper('toLowerCase', function (str) {
+        return str.toLowerCase();
+    });
+
     return({
         initialize: function () {
             gmap.initialize();

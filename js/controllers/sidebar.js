@@ -1,4 +1,4 @@
-define(['inst'], function (inst) {
+define(['clientes','inst'], function (clientes,inst) {
     function initialize() {
         $('.dropdown-toggle').dropdown();
         $(document).ready(function () {
@@ -26,6 +26,7 @@ define(['inst'], function (inst) {
             case 'clientes':
                 $("#indicadores_title").text("Clientes");
                 $("#indicadores_title").addClass('side-4');
+                clientes.render();
                 break;
             case 'instaladores':
                 $("#indicadores_title").text("Instaladores");
@@ -48,12 +49,12 @@ define(['inst'], function (inst) {
     function showVisualization(el) {
         if (el === 'detail') {
             $("#container_toggle").removeClass().addClass('container');
-            $("#basemap").hide();
+            $("#map_area").hide();
             $("#details").show();
         } else if (el === 'map') {
             $("#container_toggle").removeClass().addClass('container-fluid');
             $("#details").hide();
-            $("#basemap").show();
+            $("#map_area").show();
         }
     }
     return {

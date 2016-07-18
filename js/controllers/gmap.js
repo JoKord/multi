@@ -49,7 +49,7 @@ define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/
         pushPoints: function (type, points, callback) {
             this.data[type] = this.data[type] || {};
             this.data[type]['visible'] = true;
-            this.data[type]['data'] = [];
+            this.data[type]['data'] = this.data[type]['data'] || [] ;
             var icon = {
                 url: icons.getIconURL(type),
                 size: new google.maps.Size(16, 16),
@@ -206,7 +206,7 @@ define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/
         clearPoints: function (el) {
             this.hideFeatures(el);
             if (typeof this.data[el] !== 'undefined') {
-                this.data[el].data = {};
+                this.data[el].data = [];
                 this.data[el].visible = false;
             }
         },
@@ -232,7 +232,7 @@ define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/
         },
         createCluster: function (el, callback) {
             var mcOptions = {
-                gridSize: 2,
+                gridSize: 10,
                 styles: [{
                         'url': icons.getIconURL('cluster_' + el), // (string) The image url.
                         'height': 9, // (number) The image height.
