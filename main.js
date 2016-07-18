@@ -1,5 +1,3 @@
-/* global _ */
-
 requirejs.config({
     baseUrl: "js",
     shim: {
@@ -19,7 +17,7 @@ requirejs.config({
         },
         clusterer: {
             exports: 'MarkerClusterer'
-        },
+        }
     },
     paths: {
         underscore: "vendor/underscore/underscore",
@@ -35,6 +33,7 @@ requirejs.config({
         clientes: "controllers/clientes",
         data_produtos: "../data/produtos",
         inst: "controllers/instaladores",
+        cvi: "controllers/cvi",
         conc: "controllers/concorrencia",
         icons: "controllers/icons",
         util: "controllers/util"

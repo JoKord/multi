@@ -1,4 +1,4 @@
-define(['clientes','inst'], function (clientes,inst) {
+define(['clientes','inst', 'cvi'], function (clientes,inst, cvi) {
     function initialize() {
         $('.dropdown-toggle').dropdown();
         $(document).ready(function () {
@@ -36,6 +36,7 @@ define(['clientes','inst'], function (clientes,inst) {
             case 'canaisvendaindirecta':
                 $("#indicadores_title").text("Canais de Venda Indirecta");
                 $("#indicadores_title").addClass('side-6');
+                cvi.render();
                 break;
             case 'concorrencia':
                 $("#indicadores_title").text("Concorrência");
