@@ -1,4 +1,4 @@
-define(['clientes','inst'], function (clientes,inst) {
+define(['clientes', 'inst', 'cvi', 'gmap'], function (clientes, inst, cvi, gmap) {
     function initialize() {
         $('.dropdown-toggle').dropdown();
         $(document).ready(function () {
@@ -31,11 +31,12 @@ define(['clientes','inst'], function (clientes,inst) {
             case 'instaladores':
                 $("#indicadores_title").text("Instaladores");
                 $("#indicadores_title").addClass('side-5');
-                inst.render();               
+                inst.render();
                 break;
             case 'canaisvendaindirecta':
                 $("#indicadores_title").text("Canais de Venda Indirecta");
                 $("#indicadores_title").addClass('side-6');
+                cvi.render();
                 break;
             case 'concorrencia':
                 $("#indicadores_title").text("Concorrência");
@@ -55,6 +56,9 @@ define(['clientes','inst'], function (clientes,inst) {
             $("#container_toggle").removeClass().addClass('container-fluid');
             $("#details").hide();
             $("#map_area").show();
+            window.setTimeout(function () {
+                gmap.resetMap();
+            }, 250);
         }
     }
     return {

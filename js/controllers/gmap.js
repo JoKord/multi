@@ -1,5 +1,5 @@
-var x;
 define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/api/js?v=3'], function (_, icons) {
+    "use strict";
     var gmap = {
         map: {},
         data: {},
@@ -49,7 +49,7 @@ define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/
         pushPoints: function (type, points, callback) {
             this.data[type] = this.data[type] || {};
             this.data[type]['visible'] = true;
-            this.data[type]['data'] = this.data[type]['data'] || [] ;
+            this.data[type]['data'] = this.data[type]['data'] || [];
             var icon = {
                 url: icons.getIconURL(type),
                 size: new google.maps.Size(16, 16),
@@ -304,6 +304,7 @@ define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/
             });
         },
         resetMap: function () {
+        //    google.maps.event.trigger(this.map, "resize");
             this.map.setZoom(5);
             this.map.setCenter(new google.maps.LatLng(-18.217540, 33.127108));
         }

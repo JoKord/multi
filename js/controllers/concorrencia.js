@@ -1,4 +1,5 @@
 define(['gmap', 'treeData', 'dynatree'], function (gmap, treeData) {
+    "use strict";
     function initialize() {
         createDynaTree();
     }

@@ -66,7 +66,11 @@
                         <div id="registos" class="effect1" style="display: none;"><i class="glyphicon glyphicon-tag"></i><span> Foram encontrados <b>0</b> registos.</span></div>
                         <div id="basemap"></div>
                     </div>
-                    <div id="details" ></div>
+                    <div id="details" >
+                        <div class="center-details">
+                            <i class="glyphicon glyphicon-alert"></i> Não existem neste momento detalhes para apresentar... <i class="glyphicon glyphicon-alert"></i>
+                        </div>
+                    </div>
                 </div>
             </section>
         </div>  
