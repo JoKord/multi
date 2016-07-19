@@ -29,6 +29,7 @@ define(['gmap', 'handlebars', 'text!../partials/cvis.hbs', 'text!../partials/cvi
     function getDataCVI(req) {
         Utilities.addLoader();
         $.getJSON('data/getCVI.php', {data: req}, function (collection) {
+            console.log(collection);
             gmap.clearPoints('cvi');
             gmap.clearCuster('cvi');
             parseData(collection);
@@ -64,7 +65,8 @@ define(['gmap', 'handlebars', 'text!../partials/cvis.hbs', 'text!../partials/cvi
                 nome: cvi.firstName,
                 apelido: cvi.lastName,
                 marca: cvi.marca,
-                subtipo: cvi.subtipo
+                subtipo: cvi.subtipo,
+                fotoalt: cvi.fotoalt
             };
         });
         renderDetails(data);

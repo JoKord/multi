@@ -1,5 +1,4 @@
-var x;
-define(['clientes', 'inst', 'cvi'], function (clientes, inst, cvi) {
+define(['clientes', 'inst', 'cvi', 'gmap'], function (clientes, inst, cvi, gmap) {
     function initialize() {
         $('.dropdown-toggle').dropdown();
         $(document).ready(function () {
@@ -57,6 +56,9 @@ define(['clientes', 'inst', 'cvi'], function (clientes, inst, cvi) {
             $("#container_toggle").removeClass().addClass('container-fluid');
             $("#details").hide();
             $("#map_area").show();
+            window.setTimeout(function () {
+                gmap.resetMap();
+            }, 250);
         }
     }
     return {
