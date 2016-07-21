@@ -30,5 +30,5 @@ if (!isset($error)) {
 } else {
     header('HTTP/1.1 500 Internal Server Problem');
     header('Content-Type: application/json; charset=UTF-8');
-    die("Error " . $error->getErrorCode() . " - " . $error->getErrorMsg());
+    die(json_encode(array("ErrorCode" => $error->getErrorCode(), "ErrorMsg" => $error->getErrorMsg())));
 }

@@ -12,8 +12,9 @@
         <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
     </head>
     <body>
+        <div id="my-alert" class="my-alert"></div>
         <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container-fluid">
+            <div id="top" class="container-fluid">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                         <span class="sr-only">Toggle navigation</span>
@@ -22,7 +23,7 @@
                         <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand" href="#"><img src="assets/mc-logo-hz.png"></a>
-                </div>
+                </div>               
                 <form id="login-form" class="navbar-form navbar-right" role="login">
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1"> <span class="glyphicon glyphicon-user" aria-hidden="true"></span></span>
@@ -33,7 +34,7 @@
                         <input type="password" name="password" class="form-control" placeholder="Password" aria-describedby="basic-addon1">
                     </div>
                     <button type="submit" class="btn btn-black">Iniciar Sessão</button>
-                </form>
+                </form>               
             </div>
         </nav>  
         <div id="container_toggle" class="container-fluid">

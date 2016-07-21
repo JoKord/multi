@@ -5,9 +5,10 @@ class Error {
     private $errorCode;
     private $errorMsg;
     private static $errors = [
-        0 => "Wrong Username or Password",
-        1 => "The User is not Logged In",
-        2 => "Permission Required to complete the Operation"
+        0 => "Nome de Utilizador ou Password Errada.",
+        1 => "Não tem sessão iniciada. Por Favor, inicie a sessão.",
+        2 => "São necessárias permissões para realizar a operação.",
+        200 => "Não foi possível terminar a sessão. Por favor tente novamente."
     ];
 
     public function __construct($errorCode) {
