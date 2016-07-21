@@ -23,14 +23,14 @@
                     </button>
                     <a class="navbar-brand" href="#"><img src="assets/mc-logo-hz.png"></a>
                 </div>
-                <form class="navbar-form navbar-right" role="login">
+                <form id="login-form" class="navbar-form navbar-right" role="login">
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1"> <span class="glyphicon glyphicon-user" aria-hidden="true"></span></span>
-                        <input type="text" class="form-control" placeholder="Nome de Utilizador" aria-describedby="basic-addon1">
+                        <input type="text" name="username" class="form-control" placeholder="Nome de Utilizador" aria-describedby="basic-addon1">
                     </div>
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1"> <span class="glyphicon glyphicon-lock" aria-hidden="true"></span></span>
-                        <input type="password" class="form-control" placeholder="Password" aria-describedby="basic-addon1">
+                        <input type="password" name="password" class="form-control" placeholder="Password" aria-describedby="basic-addon1">
                     </div>
                     <button type="submit" class="btn btn-black">Iniciar Sessão</button>
                 </form>

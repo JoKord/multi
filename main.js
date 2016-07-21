@@ -36,7 +36,8 @@ requirejs.config({
         cvi: "controllers/cvi",
         conc: "controllers/concorrencia",
         icons: "controllers/icons",
-        util: "controllers/util"
+        util: "controllers/util",
+        user: "controllers/user"
     }
 });
 
