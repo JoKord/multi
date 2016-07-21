@@ -13,7 +13,6 @@ define([], function () {
                 data: data,
                 dataType: 'json',
                 success: function (response, textStatus, xhr) {
-                    console.log(response);
                     user.id = response.user_id;
                     user.username = response.username;
                     user.roles = response.roles;
@@ -55,7 +54,7 @@ define([], function () {
                 $("#alert").alert('close');
             }, 2000);
         },
-        inititalize: function () {
+        inititalize: function User() {
             var _self = this;
             $("#login-form").on("submit", function (event) {
                 _self.login(event, _self);

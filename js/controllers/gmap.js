@@ -304,9 +304,10 @@ define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/
             });
         },
         resetMap: function () {
-        //    google.maps.event.trigger(this.map, "resize");
+            google.maps.event.trigger(this.map, "resize");
             this.map.setZoom(5);
             this.map.setCenter(new google.maps.LatLng(-18.217540, 33.127108));
+            google.maps.event.trigger(this.map, "resize");
         }
     };
     return gmap;

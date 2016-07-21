@@ -58,7 +58,7 @@ define(['clientes', 'inst', 'cvi', 'gmap'], function (clientes, inst, cvi, gmap)
             $("#map_area").show();
             window.setTimeout(function () {
                 gmap.resetMap();
-            }, 250);
+            }, 400);
         }
     }
     return {

@@ -1,4 +1,4 @@
-define(['gmap', 'handlebars', 'text!../partials/instaladores.hbs', 'text!../partials/instalador.hbs', 'util'], function (gmap, hbs, hbs_instaladores, hbs_instalador, Utilities) {
+define(['gmap', 'handlebars', 'text!../partials/instaladores.hbs', 'text!../partials/instalador.hbs', 'user', 'util'], function (gmap, hbs, hbs_instaladores, hbs_instalador, user, Utilities) {
     "use strict";
     var dataInstaladores = {};
     var reqData = {};
@@ -89,6 +89,7 @@ define(['gmap', 'handlebars', 'text!../partials/instaladores.hbs', 'text!../part
         }
         $("#instaladores").hide();
         var data = dataInstaladores[inst];
+        data.user = user;
         var theTemplate = hbs.compile(hbs_instalador);
         $("#details .center-details").hide();
         $("#details").append(theTemplate(data));
