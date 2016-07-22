@@ -1,7 +1,7 @@
 <?php
 
-require_once './Role.php';
-require_once './User.php';
+require_once dirname(__FILE__) . '/Role.php';
+require_once dirname(__FILE__) . '/User.php';
 
 class PrivilegedUser extends User {
 

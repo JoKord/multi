@@ -1,9 +1,9 @@
-define(['gmap', 'handlebars', 'text!../partials/instaladores.hbs', 'text!../partials/instalador.hbs', 'user', 'util'], function (gmap, hbs, hbs_instaladores, hbs_instalador, user, Utilities) {
+define(['gmap', 'handlebars', 'text!../partials/multi/instaladores.hbs', 'text!../partials/single/instalador.hbs', 'user', 'util'], function (gmap, hbs, hbs_instaladores, hbs_instalador, user, Utilities) {
     "use strict";
     var dataInstaladores = {};
     var reqData = {};
     function renderInstaladores() {
-        $("#indicadores").load('partials/instaladores_menu.html', function () {
+        $("#indicadores").load('partials/menu/instaladores_menu.html', function () {
             $("#legendas").hide();
             $("#btn_search_instaladores").click(function () {
                 Utilities.clearRegistos();
@@ -63,7 +63,7 @@ define(['gmap', 'handlebars', 'text!../partials/instaladores.hbs', 'text!../part
         dataInstaladores = {};
         _.each(col.features, function (el, i, list) {
             dataInstaladores[el.properties.id] = el.properties;
-            dataInstaladores[el.properties.id]['foto'] = el.properties.foto || "assets/avatar_inst.png";
+            dataInstaladores[el.properties.id]['foto'] = el.properties.foto || "assets/defaults/avatar_inst.png";
             var fullname = el.properties.fullname.split(" ");
             dataInstaladores[el.properties.id].nome = fullname[0];
             dataInstaladores[el.properties.id].apelido = fullname.pop();

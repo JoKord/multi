@@ -231,7 +231,6 @@ define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/
             return typeof this.data[el] !== 'undefined';
         },
         createCluster: function (el, callback) {
-            x = this.map;
             var mcOptions = {
                 gridSize: 10,
                 styles: [{

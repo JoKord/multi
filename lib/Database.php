@@ -1,6 +1,6 @@
 <?php
 
-require dirname(__FILE__) . '/../data/Utilities.php';
+require dirname(__FILE__) . '/Utilities.php';
 
 class Database {
 

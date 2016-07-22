@@ -1,5 +1,7 @@
 <?php
 
+require_once '../classes/Error.php';
+
 session_start();
 
 if (session_destroy()) {

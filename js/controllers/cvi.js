@@ -1,9 +1,9 @@
-define(['gmap', 'handlebars', 'text!../partials/cvis.hbs', 'text!../partials/cvi.hbs', 'user', 'util'], function (gmap, hbs, hbs_cvis, hbs_cvi, user, Utilities) {
+define(['gmap', 'handlebars', 'text!../partials/multi/cvis.hbs', 'text!../partials/single/cvi.hbs', 'user', 'util'], function (gmap, hbs, hbs_cvis, hbs_cvi, user, Utilities) {
     "use strict";
     var dataCVI = {};
     var reqData = {};
     function renderCVI() {
-        $("#indicadores").load('partials/cvis_menu.html', function () {
+        $("#indicadores").load('partials/menu/cvis_menu.html', function () {
             $("#legendas").hide();
             $("#btn_search_indi").click(function () {
                 Utilities.clearRegistos();
@@ -49,7 +49,7 @@ define(['gmap', 'handlebars', 'text!../partials/cvis.hbs', 'text!../partials/cvi
         dataCVI = {};
         _.each(col.features, function (el, i, list) {
             dataCVI[el.properties.id] = el.properties;
-            dataCVI[el.properties.id]['foto'] = el.properties.foto || "assets/avatar_indi.png";
+            dataCVI[el.properties.id]['foto'] = el.properties.foto || "assets/defaults/avatar_indi.png";
             var fullname = el.properties.fullname.split(" ");
             dataCVI[el.properties.id].firstName = fullname[0];
             dataCVI[el.properties.id].lastName = fullname.pop();

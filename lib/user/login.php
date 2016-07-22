@@ -1,9 +1,9 @@
 <?php
 
-require_once './Database.php';
-require_once './User.php';
-require_once './PrivilegedUser.php';
-require_once './Error.php';
+require_once '../Database.php';
+require_once '../classes/User.php';
+require_once '../classes/PrivilegedUser.php';
+require_once '../classes/Error.php';
 
 session_start();
 

@@ -1,4 +1,3 @@
-var x = 0;
 define([], function () {
     "use strict";
     var User = {
@@ -10,7 +9,7 @@ define([], function () {
             var data = $(e.target).serialize();
             $.ajax({
                 type: "POST",
-                url: "lib/checkUser.php",
+                url: "lib/user/login.php",
                 data: data,
                 dataType: 'json',
                 success: function (response, textStatus, xhr) {
@@ -37,7 +36,7 @@ define([], function () {
             var _self = this;
             $.ajax({
                 type: "POST",
-                url: "lib/logout.php",
+                url: "lib/user/logout.php",
                 dataType: 'json',
                 success: function (response, textStatus, xhr) {
                     _self.setAlert("success", "Sessão terminada com sucesso!");

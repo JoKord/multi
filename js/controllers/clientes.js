@@ -1,11 +1,11 @@
-define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/conta.hbs', 'data_produtos', 'charts', 'user', 'util'], function (gmap, hbs, hbs_contas, hbs_conta, produtos, charts, user, Utilities) {
+define(['gmap', 'handlebars', 'text!../partials/multi/contas.hbs', 'text!../partials/single/conta.hbs', 'data_produtos', 'charts', 'user', 'util'], function (gmap, hbs, hbs_contas, hbs_conta, produtos, charts, user, Utilities) {
     "use strict";
     var OFFSET = 2000;
     var ITEMS_PER_PAGE = 50;
     var dataContas = {};
     var reqData = {};
     function renderClientes() {
-        $("#indicadores").load('partials/contas_menu.html', function () {
+        $("#indicadores").load('partials/menu/contas_menu.html', function () {
             $("#legendas").hide();
             $(".dropdown-menu.conta a").click(function () {
                 var btn = $(this).parents('.selector').find('button');
@@ -219,7 +219,7 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
         $.getJSON('data/getConta.php', {data: contaID}, function (conta) {
             var data = {
                 acc_n: contaID,
-                foto: conta.foto || "assets/avatar_cli.png",
+                foto: conta.foto || "assets/defaults/avatar_cli.png",
                 cust_n: conta.customer_number,
                 nome: conta.nome,
                 tipo_conta: conta.tipo_conta,

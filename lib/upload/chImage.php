@@ -1,7 +1,7 @@
 <?php
+require_once dirname(__FILE__) . '/../classes/PrivilegedUser.php';
+require_once dirname(__FILE__) . '/../classes/Error.php';
 
-require_once './PrivilegedUser.php';
-require_once './Error.php';
 define('MAX_FILE_SIZE', 2 * 1048576); // 2MB 
 session_start();
 if (isset($_SESSION["user_id"])) {
@@ -38,7 +38,7 @@ if (!isset($error)) {
         }
         $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
         $type = filter_input(INPUT_POST, 'type', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $fp = "/../assets/fotos/$type";
+        $fp = "../../assets/fotos/$type";
         $rfp = dirname(__FILE__) . $fp;
         if (!isset($erro)) {
             $erro = addPhoto();
@@ -49,15 +49,15 @@ if (!isset($error)) {
 }
 
 if (!isset($erro)) {
-    include '../partials/success.html';
+    include '../../partials/other/success.html';
     echo '<p class="lead">O pedido foi realizado com sucesso!</p>';
     echo '<p>Faça refresh ao mapa para visualizar os resultados.</p>';
-    include '../partials/bottom.html';
+    include '../../partials/other/bottom.html';
 } else {
-    include '../partials/error.html';
+    include '../../partials/other/error.html';
     echo "<h1 class='cover-heading'>ERRO (" . $erro->getErrorCode() . ")</h1>";
     echo "<p class='lead'>" . $erro->getErrorMsg() . "</p>";
-    include '../partials/bottom.html';
+    include '../../partials/other/bottom.html';
 }
 
 function createDir() {
