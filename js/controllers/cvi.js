@@ -1,4 +1,4 @@
-define(['gmap', 'handlebars', 'text!../partials/cvis.hbs', 'text!../partials/cvi.hbs', 'util'], function (gmap, hbs, hbs_cvis, hbs_cvi, Utilities) {
+define(['gmap', 'handlebars', 'text!../partials/cvis.hbs', 'text!../partials/cvi.hbs', 'user', 'util'], function (gmap, hbs, hbs_cvis, hbs_cvi, user, Utilities) {
     "use strict";
     var dataCVI = {};
     var reqData = {};
@@ -29,7 +29,6 @@ define(['gmap', 'handlebars', 'text!../partials/cvis.hbs', 'text!../partials/cvi
     function getDataCVI(req) {
         Utilities.addLoader();
         $.getJSON('data/getCVI.php', {data: req}, function (collection) {
-            console.log(collection);
             gmap.clearPoints('cvi');
             gmap.clearCuster('cvi');
             parseData(collection);
@@ -91,6 +90,7 @@ define(['gmap', 'handlebars', 'text!../partials/cvis.hbs', 'text!../partials/cvi
         }
         $("#cvis").hide();
         var data = dataCVI[inst];
+        data.user = user;
         var theTemplate = hbs.compile(hbs_cvi);
         $("#details .center-details").hide();
         $("#details").append(theTemplate(data));

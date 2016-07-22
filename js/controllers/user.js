@@ -1,3 +1,4 @@
+var x = 0;
 define([], function () {
     "use strict";
     var User = {
@@ -59,7 +60,20 @@ define([], function () {
             $("#login-form").on("submit", function (event) {
                 _self.login(event, _self);
             });
+            $("#details").delegate('#photo-submit', 'change', function () {
+                $(this).submit();
+                readImg(this.file);
+            });
         }
     };
+    function readImg(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $("#photo-container").attr('src', e.target.result);               
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
     return User;
 });

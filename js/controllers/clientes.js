@@ -1,4 +1,4 @@
-define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/conta.hbs', 'data_produtos', 'charts', 'util'], function (gmap, hbs, hbs_contas, hbs_conta, produtos, charts, Utilities) {
+define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/conta.hbs', 'data_produtos', 'charts', 'user', 'util'], function (gmap, hbs, hbs_contas, hbs_conta, produtos, charts, user, Utilities) {
     "use strict";
     var OFFSET = 2000;
     var ITEMS_PER_PAGE = 50;
@@ -251,6 +251,7 @@ define(['gmap', 'handlebars', 'text!../partials/contas.hbs', 'text!../partials/c
                 };
                 data.produtos.push(products);
             });
+            data.user = user;
             var theTemplate = hbs.compile(hbs_conta);
             $("#details .center-details").hide();
             $("#details").append(theTemplate(data));

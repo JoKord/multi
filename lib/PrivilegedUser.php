@@ -1,6 +1,7 @@
 <?php
 
 require_once './Role.php';
+require_once './User.php';
 
 class PrivilegedUser extends User {
 

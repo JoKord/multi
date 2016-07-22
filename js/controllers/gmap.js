@@ -231,6 +231,7 @@ define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/
             return typeof this.data[el] !== 'undefined';
         },
         createCluster: function (el, callback) {
+            x = this.map;
             var mcOptions = {
                 gridSize: 10,
                 styles: [{
@@ -307,6 +308,8 @@ define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/
             google.maps.event.trigger(this.map, "resize");
             this.map.setZoom(5);
             this.map.setCenter(new google.maps.LatLng(-18.217540, 33.127108));
+            var mapcenter = this.map.getCenter();
+            this.map.setCenter(new google.maps.LatLng((mapcenter.lat() + 0.0000001), mapcenter.lng()));
             google.maps.event.trigger(this.map, "resize");
         }
     };

@@ -227,3 +227,7 @@
     margin-top: 50px;
     text-align: center;
 }
+
+#details input[type="file"] {
+    display: none;
+}
