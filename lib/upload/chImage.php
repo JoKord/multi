@@ -38,7 +38,7 @@ if (!isset($error)) {
         }
         $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
         $type = filter_input(INPUT_POST, 'type', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $fp = "../../assets/fotos/$type";
+        $fp = "/../../assets/fotos/$type";
         $rfp = dirname(__FILE__) . $fp;
         if (!isset($erro)) {
             $erro = addPhoto();
