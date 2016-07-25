@@ -192,10 +192,10 @@ define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/
                     }
                     var polygon = new google.maps.Polygon({
                         paths: path,
-                        strokeColor: '#00abbd',
+                        strokeColor: '#bd7100',
                         strokeOpacity: 0.7,
                         strokeWeight: 3,
-                        fillColor: '#00abbd',
+                        fillColor: '#bd7100',
                         fillOpacity: 0.5
                     });
                     polygon.setMap(this.map);
