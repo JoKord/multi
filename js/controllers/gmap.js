@@ -147,10 +147,10 @@ define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/
                 if (geo.type === 'Point' || geo.type === 'MultiPoint') {
                     if (geo.type === 'Point') {
                         var myCircle = new google.maps.Circle({
-                            strokeColor: '#00abbd',
+                            strokeColor: '#bd7100',
                             strokeOpacity: 0.1,
                             strokeWeight: 3,
-                            fillColor: '#00abbd',
+                            fillColor: '#bd7100',
                             fillOpacity: 0.1,
                             center: new google.maps.LatLng(geo.coordinates[1], geo.coordinates[0]),
                             radius: 50000
@@ -160,10 +160,10 @@ define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/
                     } else {
                         for (var j = 0, cLength = geo.coordinates.length; j < cLength; j++) {
                             var myCircle = new google.maps.Circle({
-                                strokeColor: '#00abbd',
+                                strokeColor: '#bd7100',
                                 strokeOpacity: 0.3,
                                 strokeWeight: 3,
-                                fillColor: '#00abbd',
+                                fillColor: '#bd7100',
                                 fillOpacity: 0.3,
                                 center: new google.maps.LatLng(geo.coordinates[j][1], geo.coordinates[j][0]),
                                 radius: 500
