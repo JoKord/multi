@@ -124,6 +124,50 @@ class Database {
         return $geojson;
     }
 
+    public function getCVD($req) {
+        $q = "SELECT id, marca, tipo, subtipo, nome as fullName, endereco, contacto, email, id_bairro as bairro, id_cidade as cidade, id_localid as localidade, id_distrit as distrito, id_provinc as provincia, ST_AsGeoJSON(ST_Transform((geom),4326)) AS geojson FROM canal_vendas.canal_vendas";
+        $extraparams = array();
+        array_push($extraparams, " tipo = 'Directo'");
+        if ($req->marca != NULL) {
+            array_push($extraparams, " marca = '$req->marca'");
+        }
+        if ($req->subtipo != NULL) {
+            array_push($extraparams, " subtipo = '$req->subtipo'");
+        }
+        if (!empty($extraparams)) {
+            $extra = " WHERE ";
+            for ($i = 0; $i < sizeof($extraparams) - 1; $i++) {
+                $extra = $extra . "( " . $extraparams[$i] . " ) AND ";
+            }
+            $extra = $extra . "( " . $extraparams[$i] . " ) ";
+        } else {
+            $extra = "";
+        }
+        $rs = pg_query($q . $extra);
+        if (!$rs) {
+            echo 'An SQL error occured.\n';
+            exit;
+        }
+        $geojson = array(
+            'type' => 'FeatureCollection',
+            'features' => array()
+        );
+        while ($row = pg_fetch_assoc($rs)) {
+            $properties = $row;
+            unset($properties['geojson']);
+            unset($properties['geom']);
+            $feature = array(
+                'type' => 'Feature',
+                'geometry' => json_decode($row['geojson'], true),
+                'properties' =>
+                $properties
+            );
+            $feature["properties"]["foto"] = Utilities::hasPhoto('canaisvendas', $feature["properties"]["id"]);
+            array_push($geojson['features'], $feature);
+        }
+        return $geojson;
+    }
+
     public function getAccounts($offset, $status, $grp, $pro) {
         $q = "SELECT ST_AsGeoJSON(geom) as geojson, conta.account_number as id, conta.endereco, conta.customer_number as cust_n, " .
                 " tipo_conta.descricao as tipo_conta, conta.id_bairro, conta.id_cidade, conta.id_localidade, conta.id_distrito, conta.id_provincia, " .
@@ -189,7 +233,7 @@ class Database {
                 'geometry' => json_decode($row['geojson'], true),
                 'properties' =>
                 $properties
-            );           
+            );
             array_push($geojson['features'], $feature);
         }
         return $geojson;

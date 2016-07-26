@@ -199,7 +199,7 @@ h2{
     text-align: center;
     background-color: #fff;
 }
-#indicadores_title.side-3 {
+#indicadores_title.side-3,  #legendas .side-3{
     border: solid 2px #ed1b24;
 }
 #indicadores_title.side-4 {

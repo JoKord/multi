@@ -81,22 +81,22 @@ define(['gmap', 'handlebars', 'text!../partials/multi/cvis.hbs', 'text!../partia
         });
         $("#sel_detail").click();
     }
-    function dataDetail(inst) {
+    function dataDetail(cv) {
         $(window).scrollTop(0);
-        var pInst = true;
-        if (typeof inst === 'object') {
-            inst = inst.id;
-            pInst = false;
+        var pCV = true;
+        if (typeof cv === 'object') {
+            cv = cv.id;
+            pCV = false;
         }
         $("#cvis").hide();
-        var data = dataCVI[inst];
+        var data = dataCVI[cv];
         data.user = user;
         var theTemplate = hbs.compile(hbs_cvi);
         $("#details .center-details").hide();
         $("#details").append(theTemplate(data));
         $("#cvi button").click(function () {
             $("#cvi").remove();
-            if (pInst) {
+            if (pCV) {
                 $("#cvis").show();
             } else {
                 $("#sel_map").click();

@@ -29,20 +29,21 @@ define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/
                                 //hue: "#ff2233"
                             }
                         ]
-                    }, {
-                        featureType: "administrative.country",
-                        elementType: "labels",
-                        stylers: [
-                            {visibility: "off"}
-                        ]
-                    },
-                    {
-                        featureType: "administrative.cities",
-                        elementType: "labels",
-                        stylers: [
-                            {visibility: "off"}
-                        ]
-                    }
+                    }, 
+//                    {
+//                        featureType: "administrative.country",
+//                        elementType: "labels",
+//                        stylers: [
+//                            {visibility: "off"}
+//                        ]
+//                    },
+//                    {
+//                        featureType: "administrative.cities",
+//                        elementType: "labels",
+//                        stylers: [
+//                            {visibility: "off"}
+//                        ]
+//                    }
                 ]};
             this.map = new google.maps.Map(document.getElementById('basemap'), mapOptions);
         },

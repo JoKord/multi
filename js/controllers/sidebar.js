@@ -1,4 +1,4 @@
-define(['clientes', 'inst', 'cvi', 'gmap'], function (clientes, inst, cvi, gmap) {
+define(['cvd', 'clientes', 'inst', 'cvi', 'gmap'], function (cvd, clientes, inst, cvi, gmap) {
     function initialize() {
         $('.dropdown-toggle').dropdown();
         $(document).ready(function () {
@@ -22,6 +22,7 @@ define(['clientes', 'inst', 'cvi', 'gmap'], function (clientes, inst, cvi, gmap)
             case 'vendasdirectas':
                 $("#indicadores_title").text("Vendas Directas");
                 $("#indicadores_title").addClass('side-3');
+                cvd.render();
                 break;
             case 'clientes':
                 $("#indicadores_title").text("Clientes");

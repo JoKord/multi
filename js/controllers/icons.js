@@ -13,7 +13,10 @@ define(function () {
         'cluster_accounts': 'assets/icons/orange_dot.png',
         'cvi': 'assets/icons/green_dot.png',
         'cvi_DSTv' : 'assets/icons/green_dot_alt.png',
-        'cluster_cvi': 'assets/icons/cluster_cvi.png'
+        'cluster_cvi': 'assets/icons/cluster_cvi.png',
+        'cvd': 'assets/icons/red_dot.png',
+        'cvd_DSTv': 'assets/icons/red_dot_alt.png',
+        'cluster_cvd': 'assets/icons/cluster_cvd.png'
     };
     return {
         getIconURL: function (type) {
