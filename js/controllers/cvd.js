@@ -1,7 +1,9 @@
+var x = null;
 define(['gmap', 'handlebars', 'text!../partials/multi/cvds.hbs', 'text!../partials/single/cvd.hbs', 'user', 'util'], function (gmap, hbs, hbs_cvds, hbs_cvd, user, Utilities) {
     "use strict";
     var reqData = {}, dataCVD = {};
     var ITEMS_PER_PAGE = 50;
+    var clusters = {};
     function renderCVD() {
         $("#indicadores").load('partials/menu/cvds_menu.html', function () {
             $("#legendas").hide();
@@ -31,18 +33,22 @@ define(['gmap', 'handlebars', 'text!../partials/multi/cvds.hbs', 'text!../partia
         $.getJSON('data/getCVD.php', {data: req}, function (collection) {
             gmap.clearPoints('cvd');
             gmap.clearCuster('cvd');
+            Utilities.hideRadio();
             parseData(collection);
             if (JSON.parse(req).marca === 'GOTv/DSTv') {
                 $("#legendas").show();
-                gmap.pushDifferentPoints('cvd', collection, dataDetail, ['marca', 'DSTv']);
+                gmap.pushDifferentMarkersWithLabel('cvd', collection, dataDetail, ['marca', 'DSTv']);
                 gmap.createClusters('cvd', callback, 'GOTv');
+                gmap.setLabel('cvd');
             } else {
                 $("#legendas").hide();
-                gmap.pushPoints('cvd', collection, dataDetail);
+                gmap.pushMarkersWithLabel('cvd', collection, dataDetail);
                 gmap.createCluster('cvd', callback);
+                gmap.setLabel('cvd');
             }
             Utilities.removeLoader();
             Utilities.setRegistos(collection.features.length, 'cvd-colorify');
+            Utilities.showRadio(radioCall);
         });
     }
     function parseData(col) {
@@ -146,9 +152,14 @@ define(['gmap', 'handlebars', 'text!../partials/multi/cvds.hbs', 'text!../partia
         });
         $("#sel_detail a").click();
     }
+    function radioCall(e) {
+        e.preventDefault();
+        gmap.setLabel('cvd', $(this).val());
+    }
     function clearCVD() {
         $("#legendas").hide();
         Utilities.clearRegistos();
+        Utilities.hideRadio();
         var btn = $('#btn-marca');
         btn.val('');
         btn.find('.btn-text').text('Escolha a Marca');

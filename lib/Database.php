@@ -125,7 +125,16 @@ class Database {
     }
 
     public function getCVD($req) {
-        $q = "SELECT id, marca, tipo, subtipo, nome as fullName, endereco, contacto, email, id_bairro as bairro, id_cidade as cidade, id_localid as localidade, id_distrit as distrito, id_provinc as provincia, ST_AsGeoJSON(ST_Transform((geom),4326)) AS geojson FROM canal_vendas.canal_vendas";
+        $q = "SELECT ST_AsGeoJSON(ST_Transform((geom),4326)) AS geojson, cv.id, "
+                . "cv.marca, cv.tipo, cv.subtipo, "
+                . "cv.nome as fullName, cv.endereco, cv.contacto, cv.email, "
+                . "cv.id_bairro as bairro, cv.id_cidade as cidade, cv.id_localid as localidade, cv.id_distrit as distrito, cv.id_provinc as provincia, "
+                . "COALESCE(sum(fdstv.qqt_total),sum(fgotv.qqt_total)) as qqt, "
+                . "ROUND(COALESCE(sum(fdstv.preco_total_na_data),sum(fgotv.preco_total_na_data))::numeric, 2) as prc, "
+                . "pre.objectivo as obj FROM canal_vendas.canal_vendas cv "
+                . "LEFT OUTER JOIN canal_vendas.facturacao_dstv fdstv ON (cv.id = fdstv.id_canal_vendas) "
+                . "LEFT OUTER JOIN canal_vendas.facturacao_gotv fgotv ON (cv.id = fgotv.id_canal_vendas) "
+                . "JOIN canal_vendas.previsao pre ON (cv.id = pre.id_canal_vendas) ";
         $extraparams = array();
         array_push($extraparams, " tipo = 'Directo'");
         if ($req->marca != NULL) {
@@ -143,6 +152,7 @@ class Database {
         } else {
             $extra = "";
         }
+        $extra .= " GROUP BY geojson, cv.id, marca, tipo, subtipo, fullName, endereco, contacto, email, bairro, cidade, localidade, distrito, provincia, obj";
         $rs = pg_query($q . $extra);
         if (!$rs) {
             echo 'An SQL error occured.\n';

@@ -19,6 +19,14 @@ define(function () {
         },
         removeLoader: function (){
             $("#loader").hide();
+        },
+        showRadio: function (callback) {
+            $("#radio-cvd").show();
+            $("#radio-cvd input").on('change', callback);
+        },
+        hideRadio: function () {
+            $("#radio-cvd").hide();
+            $("#radio-cvd #radio-cvd-t").prop('checked', true);
         }
     };
 });

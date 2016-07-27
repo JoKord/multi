@@ -17,6 +17,10 @@ requirejs.config({
         },
         clusterer: {
             exports: 'MarkerClusterer'
+        },
+        markerwithlabel: {
+            deps: ['gmap'],
+            exports: 'MarkerWithLabel'
         }
     },
     paths: {
@@ -29,6 +33,7 @@ requirejs.config({
         gmap: "controllers/gmap",
         charts: "controllers/charts",
         clusterer: "vendor/markercluster/markerclusterer",
+        markerwithlabel: "vendor/google/markerwithlabel",
         sidebar: "controllers/sidebar",
         data_produtos: "../data/produtos",
         cvd: "controllers/cvd",

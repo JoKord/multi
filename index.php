@@ -65,6 +65,11 @@
                             <div style="margin-top: 20px;"><img src="assets/loader.gif"></div>
                         </div>
                         <div id="registos" class="effect1" style="display: none;"><i class="glyphicon glyphicon-tag"></i><span> Foram encontrados <b>0</b> registos.</span></div>
+                        <div id="radio-cvd" style="display:none;">
+                            <input id="radio-cvd-t" type="radio" name="cluster" value="t" checked/><label for="radio-cvd-t"> Tudo</label><br>
+                            <input id="radio-cvd-n" type="radio" name="cluster" value="qqt" /><label for="radio-cvd-n"> Número de Vendas</label><br>
+                            <input id="radio-cvd-v" type="radio" name="cluster" value="prc" /><label for="radio-cvd-v"> Valor de Vendas</label><br>
+                        </div>
                         <div id="basemap"></div>
                     </div>
                     <div id="details" >

@@ -29,7 +29,7 @@ define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/
                                 //hue: "#ff2233"
                             }
                         ]
-                    }, 
+                    },
 //                    {
 //                        featureType: "administrative.country",
 //                        elementType: "labels",
@@ -88,6 +88,55 @@ define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/
                 }
             }
         },
+        pushMarkersWithLabel: function (type, points, callback) {
+            this.data[type] = this.data[type] || {};
+            this.data[type]['visible'] = true;
+            this.data[type]['data'] = this.data[type]['data'] || [];
+            var icon = {
+                url: icons.getIconURL(type),
+                size: new google.maps.Size(16, 16),
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(7.5, 7.5)
+            };
+            var features = points.features;
+            for (var i = 0, fLength = features.length; i < fLength; i++) {
+                var feature = features[i];
+                var geo = feature.geometry;
+                var properties = feature.properties;
+                if (geo.type === 'Point' || geo.type === 'MultiPoint') {
+                    if (geo.type === 'Point') {
+                        var myMarker = new MarkerWithLabel({
+                            position: new google.maps.LatLng(geo.coordinates[1], geo.coordinates[0]),
+                            id: properties.id,
+                            properties: properties,
+                            icon: icon,
+                            labelContent: "1",
+                            labelClass: "labels",
+                            labelAnchor: new google.maps.Point(0, 20)
+                        });
+                        myMarker.setMap(this.map);
+                        this.data[type]['data'].push(myMarker);
+                    } else {
+                        for (var j = 0, cLength = geo.coordinates.length; j < cLength; j++) {
+                            var myMarker = new MarkerWithLabel({
+                                position: new google.maps.LatLng(geo.coordinates[j][1], geo.coordinates[j][0]),
+                                id: properties.id,
+                                properties: properties,
+                                icon: icon,
+                                labelContent: "1",
+                                labelClass: "labels",
+                                labelAnchor: new google.maps.Point(0, 20)
+                            });
+                            myMarker.setMap(this.map);
+                            this.data[type]['data'].push(myMarker);
+                        }
+                    }
+                    google.maps.event.addListener(myMarker, 'click', function () {
+                        callback(this);
+                    });
+                }
+            }
+        },
         pushDifferentPoints: function (type, points, callback, extras) {
             this.data[type] = this.data[type] || {};
             this.data[type]['visible'] = true;
@@ -124,6 +173,62 @@ define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/
                                 position: new google.maps.LatLng(geo.coordinates[j][1], geo.coordinates[j][0]),
                                 id: properties.id,
                                 sep: properties[extras[0]],
+                                icon: icon
+                            });
+                            myMarker.setMap(this.map);
+                            this.data[type]['data'].push(myMarker);
+                        }
+                    }
+                    google.maps.event.addListener(myMarker, 'click', function () {
+                        callback(this);
+                    });
+                }
+            }
+        },
+        pushDifferentMarkersWithLabel: function (type, points, callback, extras) {
+            this.data[type] = this.data[type] || {};
+            this.data[type]['visible'] = true;
+            this.data[type]['data'] = [];
+            var icon = {
+                url: icons.getIconURL(type),
+                size: new google.maps.Size(16, 16),
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(7.5, 7.5)
+            };
+            var features = points.features;
+            for (var i = 0, fLength = features.length; i < fLength; i++) {
+                var feature = features[i];
+                var geo = feature.geometry;
+                var properties = feature.properties;
+                if (properties[extras[0]] === extras[1]) {
+                    icon.url = icons.getIconURL(type + "_" + extras[1]);
+                } else {
+                    icon.url = icons.getIconURL(type);
+                }
+                if (geo.type === 'Point' || geo.type === 'MultiPoint') {
+                    if (geo.type === 'Point') {
+                        var myMarker = new MarkerWithLabel({
+                            position: new google.maps.LatLng(geo.coordinates[1], geo.coordinates[0]),
+                            id: properties.id,
+                            sep: properties[extras[0]],
+                            properties: properties,
+                            labelContent: "1",
+                            labelClass: "labels",
+                            labelAnchor: new google.maps.Point(0, 20),
+                            icon: icon
+                        });
+                        myMarker.setMap(this.map);
+                        this.data[type]['data'].push(myMarker);
+                    } else {
+                        for (var j = 0, cLength = geo.coordinates.length; j < cLength; j++) {
+                            var myMarker = new MarkerWithLabel({
+                                position: new google.maps.LatLng(geo.coordinates[j][1], geo.coordinates[j][0]),
+                                id: properties.id,
+                                sep: properties[extras[0]],
+                                properties: properties,
+                                labelContent: "1",
+                                labelClass: "labels",
+                                labelAnchor: new google.maps.Point(0, 20),
                                 icon: icon
                             });
                             myMarker.setMap(this.map);
@@ -245,11 +350,13 @@ define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/
                         'anchorIcon': [4.5, 4.5] // (Array) The anchor position of the icon x, y.
                     }],
                 callback: callback,
-                maxZoom: 21
+                maxZoom: 21,
+                lolas: "tchis"
             };
             var myCluster = new MarkerClusterer(this.map, this.data[el].data, mcOptions);
             this.clusters[el] = [];
             this.clusters[el].push(myCluster);
+            return myCluster;
         },
         createClusters: function (el, callback, separator) {
             this.clusters[el] = [];
@@ -295,6 +402,7 @@ define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/
             };
             var second = new MarkerClusterer(this.map, secondData, secondOp);
             this.clusters[el].push(second);
+            return [first, second];
         },
         clearCuster: function (el) {
             _.each(this.clusters[el], function (ele, i, list) {
@@ -311,6 +419,28 @@ define(['underscore', 'icons', 'clusterer', 'async!https://maps.google.com/maps/
             var mapcenter = this.map.getCenter();
             this.map.setCenter(new google.maps.LatLng((mapcenter.lat() + 0.0000001), mapcenter.lng()));
             google.maps.event.trigger(this.map, "resize");
+        },
+        setLabel: function (sel, labelProperty) {
+            _.each(this.data[sel]['data'], function (marker) {
+                marker.labelContent = marker.properties[labelProperty] || "1";
+                marker.label.setContent();
+            });
+            var labelProperty = labelProperty || "t";
+            _.each(this.clusters[sel], function (cluster) {
+                cluster.setCalculator(function (markers) {
+                    var count = markers.length;
+                    if (labelProperty !== 't') {
+                        _.each(markers, function (marker) {
+                            count += +marker.properties[labelProperty];
+                        });
+                    }
+                    return{
+                        text: Math.round(count * 100) / 100,
+                        index: 0
+                    };
+                });
+                cluster.repaint();
+            });
         }
     };
     return gmap;
