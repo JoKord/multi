@@ -1,0 +1,10 @@
+<div class="col-lg-12 col-md-12 col-sm-12 selector" style="margin: 10px 0px 10px 0px;">
+    <button id="btn-bairro" style="min-width: 125px;" type="button" class="btn btn-cvd dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" >
+        <span class="btn-text">Escolha o Bairro </span> <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu cvd">
+        {{#each bairros}}
+        <li><a href="#" data-id="{{id}}">{{id}} - {{nome}}</a></li>
+        {{/each}}
+    </ul>
+</div>

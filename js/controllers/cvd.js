@@ -1,8 +1,8 @@
-var x = null;
-define(['gmap', 'handlebars', 'text!../partials/multi/cvds.hbs', 'text!../partials/single/cvd.hbs', 'user', 'util'], function (gmap, hbs, hbs_cvds, hbs_cvd, user, Utilities) {
+define(['gmap', 'handlebars', 'text!../partials/multi/cvds.hbs', 'text!../partials/single/cvd.hbs', 'text!../partials/other/bairro.hbs', 'charts', 'user', 'util'], function (gmap, hbs, hbs_cvds, hbs_cvd, hbs_bairro, charts, user, Utilities) {
     "use strict";
     var reqData = {}, dataCVD = {};
     var ITEMS_PER_PAGE = 50;
+    var LIMIT = 100;
     var clusters = {};
     function renderCVD() {
         $("#indicadores").load('partials/menu/cvds_menu.html', function () {
@@ -71,7 +71,9 @@ define(['gmap', 'handlebars', 'text!../partials/multi/cvds.hbs', 'text!../partia
                 apelido: cvd.lastName,
                 marca: cvd.marca,
                 subtipo: cvd.subtipo,
-                fotoalt: cvd.fotoalt
+                fotoalt: cvd.fotoalt,
+                bairro: cvd.bairro,
+                cidade: cvd.cidade
             };
         });
         renderDetails(data);
@@ -114,8 +116,16 @@ define(['gmap', 'handlebars', 'text!../partials/multi/cvds.hbs', 'text!../partia
         } else {
             $("#listagem-cvds").hide();
             $("#graficos").show();
-            // ToDo
-            //addGraficos(contas);
+            var bairros = function () {
+                var uniq = {};
+                _.each(cvds, function (cvd) {
+                    if (!uniq.hasOwnProperty(cvd.id)) {
+                        uniq[cvd.bairro] = {id: cvd.bairro, nome: 'Nome do Bairro'};
+                    }
+                });
+                return uniq;
+            };
+            addGraficos(bairros());
         }
         $("#cvds .nav li span").click(function (e) {
             $("#cvds .nav li.active").removeClass('active');
@@ -123,6 +133,60 @@ define(['gmap', 'handlebars', 'text!../partials/multi/cvds.hbs', 'text!../partia
             renderDetails(cvds, null, $(this).data('type'));
         });
         $("#sel_detail").click();
+    }
+    function addGraficos(bairros) {
+        var theTemplate = hbs.compile(hbs_bairro);
+        $("#bairro_sel").append(theTemplate({bairros: bairros}));
+        $("#bairro_sel .dropdown-menu a").click(function () {
+            var btn = $(this).parents('.selector').find('button');
+            btn.find('.btn-text').text($(this).text());
+            btn.val($(this).text());
+            $.getJSON('data/getCVDProductsData.php', {data: $(this).data('id')}, function (col) {
+                console.log(col);
+                var dstvData = col.dstv;
+                var gotvData = col.gotv;
+                var options = {
+                    width: 500,
+                    height: 300,
+                    legend: {position: "none"},
+                    annotations: {
+                        textStyle: {
+                            fontName: 'Arial',
+                            fontSize: 14,
+                            bold: true,
+                            color: '#871b47',
+                            opacity: 0.8
+                        }
+                    }               
+                };
+                if (gotvData.length !== 0) {
+                    options.title = 'Produtos GOTV (Número de Vendas)';
+                    charts.addColumnChart('n-prod-gotv', getChartData(gotvData, 'qqt_gotv', "Quantidade de Vendas"), options);
+                    options.title = 'Produtos GOTV (Valor de Vendas)';
+                    charts.addColumnChart('v-prod-gotv', getChartData(gotvData, 'prc_gotv', "Valor de Vendas"), options);
+
+                }
+                if (dstvData.length !== 0) {
+                    options.title = 'Produtos DSTV (Número de Vendas)';
+                    charts.addColumnChart('n-prod-dstv', getChartData(dstvData, 'qqt_dstv', "Quantidade de Vendas"), options);
+                    options.title = 'Produtos DSTV (Valor de Vendas)';
+                    charts.addColumnChart('v-prod-dstv', getChartData(dstvData, 'prc_dstv', "Valor de Vendas"), options);
+                }
+            });
+        });
+    }
+    function getChartData(cts, prop, text) {
+        var colors = ["#ed1b24", "#f03f47", "#f3646a", "#f6888d", "#f8acb0", "#fbd1d3", "#fde3e4", "#fef5f6"];
+        var parsedData = {}, res = [], i = 0;
+        _.each(cts, function (item) {
+            parsedData[item.cod_prod] = Math.ceil(+item[prop]);
+        });
+        res.push([prop.toString().toUpperCase(), text, {role: 'annotation'}, {role: 'style'}]);
+        _.each(parsedData, function (value, key) {
+            res.push([key, value, value, colors[i]]);
+            i++;
+        });
+        return res;
     }
     function getPageData(cvds, page) {
         var lastIndex = (page * ITEMS_PER_PAGE);
@@ -178,6 +242,5 @@ define(['gmap', 'handlebars', 'text!../partials/multi/cvds.hbs', 'text!../partia
         render: renderCVD,
         addData: addDataCVD
     };
-
 });
 
