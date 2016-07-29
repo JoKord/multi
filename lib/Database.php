@@ -210,6 +210,37 @@ class Database {
         }
         return $res;
     }
+    
+    public function getCVDProducts($req) {
+        $q = "SELECT gotv.cod_artigo as cod_prod, sum(gotv.preco_na_data) as prc_GOTV, sum(gotv.qqt) as qqt_GOTV " .
+                "FROM canal_vendas.linha_facturacao_gotv gotv " .
+                "WHERE gotv.cod_facturacao IN " .
+                "(SELECT numero_doc FROM canal_vendas.facturacao_gotv WHERE id_canal_vendas = $req) " .
+                "GROUP BY cod_prod";
+        $rsGO = pg_query($q);
+        $res = array("gotv" => array(), "dstv" => array());
+        if (!$rsGO) {
+            echo 'An SQL error occured.\n';
+            exit;
+        }
+        while ($row = pg_fetch_assoc($rsGO)) {
+            array_push($res["gotv"], $row);
+        }
+        $q = "SELECT dstv.cod_artigo as cod_prod, sum(dstv.preco_na_data) as prc_DSTV, sum(dstv.qqt) as qqt_DSTV " .
+                "FROM canal_vendas.linha_facturacao_dstv dstv " .
+                "WHERE dstv.cod_facturacao IN " .
+                "(SELECT numero_doc FROM canal_vendas.facturacao_dstv WHERE id_canal_vendas = $req) " .
+                "GROUP BY cod_prod";
+        $rsDS = pg_query($q);       
+        if (!$rsDS) {
+            echo 'An SQL error occured.\n';
+            exit;
+        }
+        while ($row = pg_fetch_assoc($rsDS)) {
+            array_push($res["dstv"], $row);
+        }
+        return $res;
+    }
 
     public function getAccounts($offset, $status, $grp, $pro) {
         $q = "SELECT ST_AsGeoJSON(geom) as geojson, conta.account_number as id, conta.endereco, conta.customer_number as cust_n, " .

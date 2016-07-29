@@ -154,20 +154,20 @@ ClusterIcon.prototype.onAdd = function () {
             mc.callback_(cClusterIcon.cluster_.getMarkers());
             // The default click handler follows. Disable it by setting
             // the zoomOnClick property to false.
-            if (mc.getZoomOnClick()) {
-                // Zoom into the cluster.
-                mz = mc.getMaxZoom();
-                theBounds = cClusterIcon.cluster_.getBounds();
-                mc.getMap().fitBounds(theBounds);
-                // There is a fix for Issue 170 here:
-                setTimeout(function () {
-                    mc.getMap().fitBounds(theBounds);
-                    // Don't zoom beyond the max zoom level
-                    if (mz !== null && (mc.getMap().getZoom() > mz)) {
-                        mc.getMap().setZoom(mz + 1);
-                    }
-                }, 100);
-            }
+//            if (mc.getZoomOnClick()) {
+//                // Zoom into the cluster.
+//                mz = mc.getMaxZoom();
+//                theBounds = cClusterIcon.cluster_.getBounds();
+//                mc.getMap().fitBounds(theBounds);
+//                // There is a fix for Issue 170 here:
+//                setTimeout(function () {
+//                    mc.getMap().fitBounds(theBounds);
+//                    // Don't zoom beyond the max zoom level
+//                    if (mz !== null && (mc.getMap().getZoom() > mz)) {
+//                        mc.getMap().setZoom(mz + 1);
+//                    }
+//                }, 100);
+//            }
 
             // Prevent event propagation to the map:
             e.cancelBubble = true;

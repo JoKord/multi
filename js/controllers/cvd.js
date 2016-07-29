@@ -4,6 +4,20 @@ define(['gmap', 'handlebars', 'text!../partials/multi/cvds.hbs', 'text!../partia
     var ITEMS_PER_PAGE = 50;
     var LIMIT = 100;
     var clusters = {};
+    var options = {
+        width: 500,
+        height: 300,
+        legend: {position: "none"},
+        annotations: {
+            textStyle: {
+                fontName: 'Arial',
+                fontSize: 14,
+                bold: true,
+                color: '#871b47',
+                opacity: 0.8
+            }
+        }
+    };
     function renderCVD() {
         $("#indicadores").load('partials/menu/cvds_menu.html', function () {
             $("#legendas").hide();
@@ -142,41 +156,47 @@ define(['gmap', 'handlebars', 'text!../partials/multi/cvds.hbs', 'text!../partia
             btn.find('.btn-text').text($(this).text());
             btn.val($(this).text());
             $.getJSON('data/getCVDProductsData.php', {data: $(this).data('id')}, function (col) {
-                console.log(col);
                 var dstvData = col.dstv;
                 var gotvData = col.gotv;
-                var options = {
-                    width: 500,
-                    height: 300,
-                    legend: {position: "none"},
-                    annotations: {
-                        textStyle: {
-                            fontName: 'Arial',
-                            fontSize: 14,
-                            bold: true,
-                            color: '#871b47',
-                            opacity: 0.8
-                        }
-                    }               
-                };
+                var totalGotv = {qqt: 0, prc: 0};
                 if (gotvData.length !== 0) {
                     options.title = 'Produtos GOTV (Número de Vendas)';
                     charts.addColumnChart('n-prod-gotv', getChartData(gotvData, 'qqt_gotv', "Quantidade de Vendas"), options);
                     options.title = 'Produtos GOTV (Valor de Vendas)';
                     charts.addColumnChart('v-prod-gotv', getChartData(gotvData, 'prc_gotv', "Valor de Vendas"), options);
-
+                    var totalGotv = function (obj) {
+                        _.each(gotvData, function (item) {
+                            obj.qqt += +item.qqt_gotv;
+                            obj.prc += +item.prc_gotv;
+                        });
+                        obj.prc = Math.ceil(obj.prc);
+                        return obj;
+                    }(totalGotv);
                 }
+                var totalDstv = {qqt: 0, prc: 0};
                 if (dstvData.length !== 0) {
                     options.title = 'Produtos DSTV (Número de Vendas)';
                     charts.addColumnChart('n-prod-dstv', getChartData(dstvData, 'qqt_dstv', "Quantidade de Vendas"), options);
                     options.title = 'Produtos DSTV (Valor de Vendas)';
                     charts.addColumnChart('v-prod-dstv', getChartData(dstvData, 'prc_dstv', "Valor de Vendas"), options);
+                    var totalDstv = function (obj) {
+                        _.each(dstvData, function (item) {
+                            obj.qqt += +item.qqt_dstv;
+                            obj.prc += +item.prc_dstv;
+                        });
+                        obj.prc = Math.ceil(obj.prc);
+                        return obj;
+                    }(totalDstv);
                 }
+                options.title = 'TOTAL (Número de Vendas)';
+                charts.addColumnChart('t-n-prod', getChartData([{"cod_prod": 'DSTv', "qqt": totalDstv.qqt}, {"cod_prod": 'GOTv', "qqt": totalGotv.qqt}], "qqt", "Quantidade de Vendas"), options);
+                options.title = 'TOTAL (Valor de Vendas)';
+                charts.addColumnChart('t-v-prod', getChartData([{"cod_prod": 'DSTv', "prc": totalDstv.prc}, {"cod_prod": 'GOTv', "prc": totalGotv.prc}], "prc", "Valor de Vendas"), options);
             });
         });
     }
-    function getChartData(cts, prop, text) {
-        var colors = ["#ed1b24", "#f03f47", "#f3646a", "#f6888d", "#f8acb0", "#fbd1d3", "#fde3e4", "#fef5f6"];
+    function getChartData(cts, prop, text, colors) {
+        var colors = colors || ["#ed1b24", "#f03f47", "#f3646a", "#f6888d", "#f8acb0", "#fbd1d3", "#fde3e4", "#fef5f6"];
         var parsedData = {}, res = [], i = 0;
         _.each(cts, function (item) {
             parsedData[item.cod_prod] = Math.ceil(+item[prop]);
@@ -206,6 +226,27 @@ define(['gmap', 'handlebars', 'text!../partials/multi/cvds.hbs', 'text!../partia
         var theTemplate = hbs.compile(hbs_cvd);
         $("#details .center-details").hide();
         $("#details").append(theTemplate(data));
+        var total = +dataCVD[cv].prc - dataCVD[cv].obj;
+        var color = total >= 0 ? "green" : "red";
+        var prvData = [{"cod_prod": 'Objectivo', "val": dataCVD[cv].obj}, {"cod_prod": 'Vendas', "val": dataCVD[cv].prc}, {"cod_prod": 'TOTAL', "val": total}];
+        options.width = 600;
+        charts.addColumnChart('previsao-graph', getChartData(prvData, "val", "Valor", ["#ed1b24", "#f8acb0", color]), options);
+        $.getJSON('data/getCVDProductsByID.php', {data: cv}, function (col) {
+            var dstvData = col.dstv;
+            var gotvData = col.gotv;
+            if (dstvData.lenght !== 0) {
+                options.title = 'Produtos DSTV (Número de Vendas)';
+                charts.addColumnChart('n-vendas', getChartData(dstvData, 'qqt_dstv', "Quantidade de Vendas"), options);
+                options.title = 'Produtos DSTV (Valor de Vendas)';
+                charts.addColumnChart('v-vendas', getChartData(dstvData, 'prc_dstv', "Valor de Vendas"), options);
+            }
+            if (gotvData.length !== 0) {
+                options.title = 'Produtos GOTV (Número de Vendas)';
+                charts.addColumnChart('n-vendas', getChartData(gotvData, 'qqt_gotv', "Quantidade de Vendas"), options);
+                options.title = 'Produtos GOTV (Valor de Vendas)';
+                charts.addColumnChart('v-vendas', getChartData(gotvData, 'prc_gotv', "Valor de Vendas"), options);
+            }
+        });
         $("#cvd button").click(function () {
             $("#cvd").remove();
             if (pCV) {

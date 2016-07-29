@@ -1,8 +1,12 @@
 body{
     margin-top: 50px;
 }
+#map_area{
+    position: relative;
+    height: 90vh;
+}
 #basemap{
-    height: 600px;
+    height: 100%;
     width: 100%;
 }
 #details{
