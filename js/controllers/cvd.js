@@ -87,6 +87,7 @@ define(['gmap', 'handlebars', 'text!../partials/multi/cvds.hbs', 'text!../partia
                 subtipo: cvd.subtipo,
                 fotoalt: cvd.fotoalt,
                 bairro: cvd.bairro,
+                bairro_nome: cvd.bairro_nome,
                 cidade: cvd.cidade
             };
         });
@@ -134,7 +135,7 @@ define(['gmap', 'handlebars', 'text!../partials/multi/cvds.hbs', 'text!../partia
                 var uniq = {};
                 _.each(cvds, function (cvd) {
                     if (!uniq.hasOwnProperty(cvd.id)) {
-                        uniq[cvd.bairro] = {id: cvd.bairro, nome: 'Nome do Bairro'};
+                        uniq[cvd.bairro] = {id: cvd.bairro, nome: cvd.bairro_nome};
                     }
                 });
                 return uniq;
@@ -149,6 +150,7 @@ define(['gmap', 'handlebars', 'text!../partials/multi/cvds.hbs', 'text!../partia
         $("#sel_detail").click();
     }
     function addGraficos(bairros) {
+        console.log(bairros);
         var theTemplate = hbs.compile(hbs_bairro);
         $("#bairro_sel").append(theTemplate({bairros: bairros}));
         $("#bairro_sel .dropdown-menu a").click(function () {
@@ -156,6 +158,7 @@ define(['gmap', 'handlebars', 'text!../partials/multi/cvds.hbs', 'text!../partia
             btn.find('.btn-text').text($(this).text());
             btn.val($(this).text());
             $.getJSON('data/getCVDProductsData.php', {data: $(this).data('id')}, function (col) {
+                options.width = 500;
                 var dstvData = col.dstv;
                 var gotvData = col.gotv;
                 var totalGotv = {qqt: 0, prc: 0};
@@ -228,7 +231,7 @@ define(['gmap', 'handlebars', 'text!../partials/multi/cvds.hbs', 'text!../partia
         $("#details").append(theTemplate(data));
         var total = +dataCVD[cv].prc - dataCVD[cv].obj;
         var color = total >= 0 ? "green" : "red";
-        var prvData = [{"cod_prod": 'Objectivo', "val": dataCVD[cv].obj}, {"cod_prod": 'Vendas', "val": dataCVD[cv].prc}, {"cod_prod": 'TOTAL', "val": total}];
+        var prvData = [{"cod_prod": 'Objectivo', "val": dataCVD[cv].obj}, {"cod_prod": 'Vendas Realizadas', "val": dataCVD[cv].prc}, {"cod_prod": 'Balanço', "val": total}];
         options.width = 600;
         charts.addColumnChart('previsao-graph', getChartData(prvData, "val", "Valor", ["#ed1b24", "#f8acb0", color]), options);
         $.getJSON('data/getCVDProductsByID.php', {data: cv}, function (col) {
