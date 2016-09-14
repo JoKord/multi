@@ -18,7 +18,7 @@ define([], function () {
                     user.roles = response.roles;
                     $("#login-form").hide();
                     user.setAlert("success", "Sessão iniciada com sucesso!");
-                    $("#top").append("<ul id='logout' class='nav navbar-nav navbar-right'><li><a href='#'>Wellcome, " + user.username + "!</a></li><button id='btn-logout' type='button' class='btn btn-black navbar-btn'>Terminar Sessão</button>&nbsp;</ul>");
+                    $("#top").append("<ul id='logout' class='nav navbar-nav navbar-right'><li><a href='#'>Olá, " + user.username + "!</a></li><button id='btn-logout' type='button' class='btn btn-black navbar-btn'>Terminar Sessão</button>&nbsp;</ul>");
                     var self = user;
                     $("#logout button").click(function () {
                         self.logout();

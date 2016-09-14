@@ -1,5 +1,6 @@
 requirejs.config({
     baseUrl: "js",
+    waitSeconds: 20,
     shim: {
         underscore: {
             deps: ['jquery'],
