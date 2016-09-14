@@ -3,7 +3,7 @@
 require_once '../Database.php';
 require_once '../classes/User.php';
 require_once '../classes/PrivilegedUser.php';
-require_once '../classes/Error.php';
+require_once '../classes/MyError.php';
 
 session_start();
 
@@ -18,10 +18,10 @@ if ($user_id) {
     if (isset($_SESSION["user_id"])) {
         $res = PrivilegedUser::getByUserID($_SESSION["user_id"]);
     } else {
-        $error = new Error(1);
+        $error = new MyError(1);
     }
 } else {
-    $error = new Error(0);
+    $error = new MyError(0);
 }
 
 if (!isset($error)) {

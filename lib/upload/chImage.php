@@ -1,32 +1,32 @@
 <?php
 require_once dirname(__FILE__) . '/../classes/PrivilegedUser.php';
-require_once dirname(__FILE__) . '/../classes/Error.php';
+require_once dirname(__FILE__) . '/../classes/MyError.php';
 
 define('MAX_FILE_SIZE', 2 * 1048576); // 2MB 
 session_start();
 if (isset($_SESSION["user_id"])) {
     $u = PrivilegedUser::getByUserID($_SESSION["user_id"]);
 } else {
-    $error = new Error(1);
+    $error = new MyError(1);
 }
 if (!isset($error)) {
     if ($u->hasPrivilege("AddPhotos")) {
         if (!isset($_FILES['file']['error']) || is_array($_FILES['file']['error'])) {
-            $erro = new Error(300);
+            $erro = new MyError(300);
         }
         switch ($_FILES['file']['error']) {
             case UPLOAD_ERR_OK:
                 break;
             case UPLOAD_ERR_NO_FILE:
-                $erro = new Error(301);
+                $erro = new MyError(301);
             case UPLOAD_ERR_INI_SIZE:
             case UPLOAD_ERR_FORM_SIZE:
-                $erro = new Error(302);
+                $erro = new MyError(302);
             default:
-                $erro = new Error(300);
+                $erro = new MyError(300);
         }
         if ($_FILES['file']['size'] > MAX_FILE_SIZE) {
-            $erro = new Error(302);
+            $erro = new MyError(302);
         }
         $finfo = new finfo(FILEINFO_MIME_TYPE);
         if (false === $ext = array_search($finfo->file($_FILES['file']['tmp_name']), array(
@@ -34,7 +34,7 @@ if (!isset($error)) {
             'png' => 'image/png',)
                 , true
                 )) {
-            $erro = new Error(303);
+            $erro = new MyError(303);
         }
         $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
         $type = filter_input(INPUT_POST, 'type', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -44,7 +44,7 @@ if (!isset($error)) {
             $erro = addPhoto();
         }
     } else {
-        $erro = new Error(2);
+        $erro = new MyError(2);
     }
 }
 
@@ -65,7 +65,7 @@ function createDir() {
     if (mkdir($rfp . "/", 0777, true)) {
         addPhoto();
     } else {
-        return new Error(304);
+        return new MyError(304);
     }
 }
 
@@ -73,7 +73,7 @@ function addPhoto() {
     global $rfp, $id, $ext;
     if (file_exists($rfp)) {
         if (!move_uploaded_file($_FILES['file']['tmp_name'], $rfp . "/" . $id . "." . $ext)) {
-            return new Error(300);
+            return new MyError(300);
         }
     } else {
         return createDir();

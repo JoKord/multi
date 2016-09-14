@@ -1,6 +1,6 @@
 <?php
 
-class Error {
+class MyError {
     
     private $errorCode;
     private $errorMsg;
